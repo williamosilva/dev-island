@@ -11,6 +11,11 @@ follows you and shows that project's scripts instead.
 
 It is a standalone Electron app, not a VS Code extension.
 
+I built Dev Island out of a little laziness. I was tired of typing the same npm
+scripts and switching between terminals just to run dev, build or test. The
+idea is simple: keep those scripts one click away and make this part of the day
+a little faster.
+
 ![The Dev Island bar showing the scripts of a Node.js project](docs/images/dev-island-overview.png)
 
 ## Beta status
@@ -50,21 +55,36 @@ and run the same `npm ci` and `npm run build`.
 The build matters: `dist/` is not in the repository, and it is what the CLI
 loads. Run `npm run build` again after every `git pull`.
 
+Keep the folder somewhere stable. Setup records its absolute path, so if you
+move or rename it later, run `setup` again.
+
 ## How to use
 
-Run the one-time setup from the Dev Island folder:
+Run the setup once, from the Dev Island folder:
 
 ```bash
 node bin/dev-island.js setup
 ```
 
-That installs a small hook in your PowerShell profile and starts Dev Island in
-the background. From then on:
+Setup is done only once. After that, Dev Island works across your Node.js
+projects. Open a project in VS Code, start an integrated PowerShell terminal,
+and the Island loads that project's scripts.
 
-1. open a Node.js project in VS Code;
-2. open an integrated PowerShell terminal in it;
-3. the bar appears at the top of the window with your scripts;
-4. click one to run it.
+So the whole flow is:
+
+1. clone or download Dev Island;
+2. `npm ci`;
+3. `npm run build`;
+4. `node bin/dev-island.js setup`, once;
+5. leave the folder where it is;
+6. open any Node.js project in VS Code;
+7. open an integrated PowerShell terminal;
+8. click the scripts on the Island.
+
+You don't run `setup` in every project, and there is nothing to install
+globally — Dev Island is not published to npm, and the `dev-island` command is
+not added to your PATH. Whenever you need the CLI, call it through
+`node bin/dev-island.js` from the Dev Island folder.
 
 Clicking a script opens a terminal inside the bar, where you can watch the
 output and stop or restart the process.
@@ -73,15 +93,29 @@ output and stop or restart the process.
 
 When there are more scripts than fit, the extra ones go into `Mais (N)`.
 
-![The Mais panel listing the scripts that did not fit on the bar](docs/images/dev-island-more-scripts.png)
+![The Mais panel listing the scripts that did not fit](docs/images/dev-island-more-scripts.png)
 
-You normally never need anything else. If you want to force a project to sync,
-go to its folder and point at the CLI with its full path:
+If a project ever needs a manual sync, go to its folder and point at the CLI
+with its full path:
 
 ```bash
 cd C:\dev\my-app
 node C:\tools\dev-island\bin\dev-island.js init
 ```
+
+## Themes
+
+The sun/moon button switches between the two themes, and your choice is
+remembered.
+
+| Dark | Light |
+| --- | --- |
+| ![Compact bar, dark theme](docs/images/dev-island-overview.png) | ![Compact bar, light theme](docs/images/dev-island-overview-light.png) |
+| ![Mais panel, dark theme](docs/images/dev-island-more-scripts.png) | ![Mais panel, light theme](docs/images/dev-island-more-scripts-light.png) |
+
+The terminal follows the theme as well:
+
+![A script running with its terminal open, light theme](docs/images/dev-island-running-script-light.png)
 
 ## Main commands
 
