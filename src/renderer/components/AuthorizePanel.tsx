@@ -16,16 +16,16 @@ export function AuthorizePanel({ pending, onResolve }: Props): JSX.Element {
   return (
     <AnimatedPanel>
       <div className="panel__head">
-        <div className="panel__title">Projeto não autorizado</div>
+        <div className="panel__title">Project not authorized</div>
       </div>
       <div className="notice">
-        Este projeto já possui uma configuração que não foi criada aqui. Confira o caminho e os
-        comandos antes de autorizar.
+        This project already has a configuration that was not created here. Check the path
+        and the commands before authorizing it.
       </div>
       <div className="panel__path">{pending.path}</div>
 
       <div className="more">
-        {pending.buttons.length === 0 && <div className="panel__hint">Nenhum comando no arquivo.</div>}
+        {pending.buttons.length === 0 && <div className="panel__hint">No commands in the file.</div>}
         {pending.buttons.map((button) => (
           <div className="more__item" key={`${button.name}-${button.script}`}>
             <span className="more__name">{button.name}</span>
@@ -36,10 +36,10 @@ export function AuthorizePanel({ pending, onResolve }: Props): JSX.Element {
 
       <div className="panel__actions">
         <button type="button" className="action action--primary" onClick={() => onResolve(true)}>
-          Autorizar
+          Authorize
         </button>
         <button type="button" className="action action--muted" onClick={() => onResolve(false)}>
-          Ignorar
+          Ignore
         </button>
       </div>
     </AnimatedPanel>

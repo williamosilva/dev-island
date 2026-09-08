@@ -25,18 +25,18 @@ export interface ForegroundWindow {
 export type Anchor = Pick<ForegroundWindow, 'x' | 'y' | 'width' | 'height'>;
 
 export type VisibilityReason =
-  | 'fechado-pelo-usuario'
-  | 'sem-projeto-ativo'
-  | 'sem-configuracao'
-  | 'sem-terminal-ativo'
+  | 'dismissed-by-user'
+  | 'no-active-project'
+  | 'no-configuration'
+  | 'no-live-terminal'
   | 'preview'
-  | 'sem-janela-em-primeiro-plano'
-  | 'janela-minimizada'
-  | 'vscode-em-primeiro-plano'
-  | 'janela-sem-projeto'
-  | 'interacao-no-widget'
-  | 'widget-sem-contexto-vscode'
-  | 'outro-aplicativo-em-primeiro-plano';
+  | 'no-foreground-window'
+  | 'window-minimized'
+  | 'vscode-in-foreground'
+  | 'window-without-project'
+  | 'widget-interaction'
+  | 'widget-without-vscode-context'
+  | 'another-app-in-foreground';
 
 export interface VisibilityDecision {
   visible: boolean;
@@ -55,7 +55,7 @@ export interface DecisionInput {
   hasLiveTerminal: boolean;
   hasPendingAuthorization: boolean;
   preview: boolean;
-  /** Set by "Fechar"; cleared when a terminal reports a project. */
+  /** Set by "Close"; cleared when a terminal reports a project. */
   dismissed: boolean;
   /** False for a VS Code window nobody reported a project from. */
   foregroundHasProject: boolean;
@@ -88,24 +88,24 @@ function shown(reason: VisibilityReason, anchor: Anchor | null): VisibilityDecis
 }
 
 export function decideVisibility(input: DecisionInput): VisibilityDecision {
-  if (input.dismissed) return hidden('fechado-pelo-usuario');
+  if (input.dismissed) return hidden('dismissed-by-user');
 
   if (!input.hasPendingAuthorization) {
-    if (!input.hasActiveProject) return hidden('sem-projeto-ativo');
-    if (!input.hasProjectConfig) return hidden('sem-configuracao');
-    if (!input.hasLiveTerminal) return hidden('sem-terminal-ativo');
+    if (!input.hasActiveProject) return hidden('no-active-project');
+    if (!input.hasProjectConfig) return hidden('no-configuration');
+    if (!input.hasLiveTerminal) return hidden('no-live-terminal');
   }
 
   if (input.preview) return shown('preview', null);
 
   const foreground = input.foreground;
-  if (!foreground) return hidden('sem-janela-em-primeiro-plano');
-  if (foreground.minimized) return hidden('janela-minimizada');
+  if (!foreground) return hidden('no-foreground-window');
+  if (foreground.minimized) return hidden('window-minimized');
 
   if (isVsCodeProcess(foreground.processName)) {
     // Better to show nothing than the commands of another window's project.
-    if (!input.foregroundHasProject) return hidden('janela-sem-projeto');
-    return shown('vscode-em-primeiro-plano', {
+    if (!input.foregroundHasProject) return hidden('window-without-project');
+    return shown('vscode-in-foreground', {
       x: foreground.x,
       y: foreground.y,
       width: foreground.width,
@@ -116,11 +116,11 @@ export function decideVisibility(input: DecisionInput): VisibilityDecision {
   if (foreground.pid === input.ownPid) {
     // Keep the widget visible while it has focus from VS Code.
     return input.lastExternalWasVsCode && input.foregroundHasProject
-      ? shown('interacao-no-widget', null)
-      : hidden('widget-sem-contexto-vscode');
+      ? shown('widget-interaction', null)
+      : hidden('widget-without-vscode-context');
   }
 
-  return hidden('outro-aplicativo-em-primeiro-plano');
+  return hidden('another-app-in-foreground');
 }
 
 /** All the controller may do to the window. */
@@ -161,7 +161,7 @@ export class VisibilityController {
   private appliedAnchor: Anchor | null = null;
   private foregroundHasProject = true;
   private alwaysOnTop = false;
-  private current: VisibilityDecision = { visible: false, reason: 'sem-projeto-ativo', anchor: null };
+  private current: VisibilityDecision = { visible: false, reason: 'no-active-project', anchor: null };
 
   constructor(
     private readonly window: WidgetWindowPort,

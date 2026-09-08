@@ -13,7 +13,7 @@ import type { LayoutLimits } from './types';
  *
  * It is reserved *before* deciding how many scripts fit: given the choice
  * between one more button and this strip, the strip wins and the button goes
- * to `Mais (N)`.
+ * to `More (N)`.
  */
 export const MIN_FREE_DRAG_WIDTH = 28;
 

@@ -93,9 +93,11 @@ a saída e pode parar ou reiniciar o processo.
 ![Um script em execução com o terminal aberto dentro da barra](docs/images/dev-island-running-script.png)
 
 Quando há mais scripts do que cabe na barra, os que sobram vão para o
-`Mais (N)`.
+`More (N)`.
 
-![O painel Mais com os scripts que não couberam](docs/images/dev-island-more-scripts.png)
+![O painel More com os scripts que não couberam](docs/images/dev-island-more-scripts.png)
+
+Você também pode arrastar os botões para reordenar, e a ordem fica salva.
 
 Se algum projeto precisar de uma sincronização manual, entre na pasta dele e
 chame a CLI pelo caminho completo:
@@ -105,6 +107,38 @@ cd C:\dev\meu-app
 node C:\ferramentas\dev-island\bin\dev-island.js init
 ```
 
+## Seus próprios botões
+
+O botão `+` adiciona um comando que não está no seu `package.json`. Ele pede
+duas coisas — um **Name** (o rótulo) e um **Script** (o comando a rodar) — então
+dá para deixar algo como `npx prisma studio` ou `docker compose up` a um
+clique. Para remover, abra o terminal daquele botão e clique em **Delete**.
+
+O Dev Island guarda esses botões num arquivo pequeno dentro do projeto:
+
+```
+<seu-projeto>/.dev-island/buttons.json
+```
+
+Ele tem a barra inteira: os scripts encontrados no `package.json`, os que você
+adicionou à mão e a ordem em que você arrastou:
+
+```json
+{
+  "buttons": [
+    { "name": "Dev", "script": "npm run dev" },
+    { "name": "Studio", "script": "npx prisma studio" }
+  ]
+}
+```
+
+É JSON simples, então dá para editar na mão. Versione o arquivo se os botões
+fizerem sentido para o time inteiro, ou coloque `.dev-island/` no `.gitignore`
+daquele projeto se forem só seus.
+
+O tema, a posição e o tamanho da janela não ficam aí — são seus, não do
+projeto, então moram em `%APPDATA%\dev-island`.
+
 ## Temas
 
 O botão de sol/lua alterna entre os dois temas, e a sua escolha fica guardada.
@@ -112,7 +146,7 @@ O botão de sol/lua alterna entre os dois temas, e a sua escolha fica guardada.
 | Escuro | Claro |
 | --- | --- |
 | ![Barra compacta, tema escuro](docs/images/dev-island-overview.png) | ![Barra compacta, tema claro](docs/images/dev-island-overview-light.png) |
-| ![Painel Mais, tema escuro](docs/images/dev-island-more-scripts.png) | ![Painel Mais, tema claro](docs/images/dev-island-more-scripts-light.png) |
+| ![Painel More, tema escuro](docs/images/dev-island-more-scripts.png) | ![Painel More, tema claro](docs/images/dev-island-more-scripts-light.png) |
 
 O terminal acompanha o tema também:
 

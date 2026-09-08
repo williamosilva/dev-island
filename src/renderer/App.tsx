@@ -70,7 +70,7 @@ export function App(): JSX.Element {
     state.layout.sizeMode,
   ]);
 
-  // One measurement for the whole widget; "Mais" renders what was left out.
+  // One measurement for the whole widget; "More" renders what was left out.
   const { visibleCount, hiddenCount, baseWidth, measureRef } = useFittedScripts(
     state.buttons.length,
     state.layout.maxWidth,
@@ -82,7 +82,7 @@ export function App(): JSX.Element {
     const result = await bridge.reorderButtons(orderedIds);
     if (result.ok) return true;
     // The gesture puts the previous order back; this only says why.
-    setError(result.error ?? 'Não foi possível salvar a nova ordem.');
+    setError(result.error ?? 'Could not save the new order.');
     return false;
   }, []);
   const gestures = useTopbarGestures(state.buttons, reorder);
@@ -107,7 +107,7 @@ export function App(): JSX.Element {
     if (view.kind === 'more' && hidden.length === 0) setView({ kind: 'compact' });
   }, [hidden.length, view.kind]);
 
-  // Closing "Mais" or switching project takes the dragged rows away.
+  // Closing "More" or switching project takes the dragged rows away.
   const cancelGesture = gestures.cancel;
   useEffect(() => {
     if (view.kind !== 'more') cancelGesture();
@@ -166,13 +166,13 @@ export function App(): JSX.Element {
 
   const addButton = useCallback(async (name: string, script: string): Promise<string | null> => {
     const result = await bridge.addButton(name, script);
-    return result.ok ? null : (result.error ?? 'Não foi possível salvar.');
+    return result.ok ? null : (result.error ?? 'Could not save.');
   }, []);
 
   const deleteButton = useCallback(async (id: string) => {
     const result = await bridge.deleteButton(id);
     if (!result.ok) {
-      setError(result.error ?? 'Não foi possível excluir.');
+      setError(result.error ?? 'Could not delete.');
       return;
     }
     setView({ kind: 'compact' });

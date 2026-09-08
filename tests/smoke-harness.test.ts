@@ -245,7 +245,7 @@ describe.skipIf(!onWindows)('lifetime and clean-up', () => {
       timeout: 120_000,
     });
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain('Provedor desconhecido');
+    expect(result.stderr).toContain('Unknown provider');
     expect(smokeDirectories().filter((entry) => !before.has(entry))).toEqual([]);
   }, 150_000);
 
@@ -303,7 +303,7 @@ describe('the harness itself', () => {
       timeout: 120_000,
     });
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain('Provedor desconhecido: perl');
+    expect(result.stderr).toContain('Unknown provider: perl');
     expect(result.stderr).toContain('pdm');
   }, 150_000);
 

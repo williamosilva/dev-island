@@ -23,38 +23,38 @@ export async function runSetup(options: SetupOptions = {}): Promise<number> {
   heading('setup');
 
   const launcher = writeLauncherInfo(dataDir);
-  step(`inicializador registrado: ${launcher.appRoot}`);
+  step(`launcher recorded: ${launcher.appRoot}`);
 
   let migrated = false;
   for (const install of installShellIntegration({ dataDir })) {
     step(
       install.profileUpdated
-        ? `perfil atualizado: ${install.profilePath}`
-        : `perfil já atualizado: ${install.profilePath}`,
+        ? `profile updated: ${install.profilePath}`
+        : `profile already up to date: ${install.profilePath}`,
     );
     if (install.backupPath) step(`backup: ${install.backupPath}`);
     if (install.profileUpdated) migrated = true;
   }
-  step(`hook do PowerShell na versão ${SHELL_BLOCK_VERSION}`);
+  step(`PowerShell hook at version ${SHELL_BLOCK_VERSION}`);
 
   if (options.noStart) {
-    info('Widget não iniciado (--no-start).');
+    info('Widget not started (--no-start).');
     return 0;
   }
 
   if (await isAppRunning(dataDir)) {
-    step('widget já estava em execução');
+    step('widget was already running');
   } else if (!(await launchApp({ dataDir }))) {
-    info(`Não foi possível iniciar o widget. Tente "${PRODUCT_ID} start".`);
+    info(`Could not start the widget. Try "${PRODUCT_ID} start".`);
     return 1;
   } else {
-    step('widget iniciado em segundo plano');
+    step('widget started in the background');
   }
 
-  info('configuração global concluída');
-  info('abra um PowerShell integrado do VS Code em qualquer projeto Node');
+  info('global setup done');
+  info('open a VS Code integrated PowerShell in any Node project');
   if (migrated) {
-    info('feche os terminais integrados já abertos para que carreguem o novo hook');
+    info('close any open integrated terminal so it picks up the new hook');
   }
   return 0;
 }

@@ -12,7 +12,7 @@ export interface HandlerContext {
   pty: PtyManager;
   getWindow(): BrowserWindow | null;
   placement: WindowPlacement;
-  /** The user pressed "Fechar": hide until a terminal reports a project again. */
+  /** The user pressed "Close": hide until a terminal reports a project again. */
   onDismiss?: () => void;
   /** Persist an explicit theme choice. Returns the theme actually applied. */
   onThemeChange?: (theme: unknown) => void;
@@ -72,7 +72,7 @@ export function registerIpcHandlers(context: HandlerContext): void {
     return { key: state.sessionKey(id as string), script: button.script, cwd: project.path };
   };
 
-  const notFound: ActionResult = { ok: false, error: 'Botão não encontrado.' };
+  const notFound: ActionResult = { ok: false, error: 'Button not found.' };
 
   ipcMain.handle(IPC.getState, () => state.getState());
 
@@ -126,7 +126,7 @@ export function registerIpcHandlers(context: HandlerContext): void {
   );
 
   ipcMain.handle(IPC.setTheme, (_event, theme: unknown): ActionResult => {
-    if (theme !== 'light' && theme !== 'dark') return { ok: false, error: 'Tema inválido.' };
+    if (theme !== 'light' && theme !== 'dark') return { ok: false, error: 'Invalid theme.' };
     context.onThemeChange?.(theme);
     return { ok: true };
   });

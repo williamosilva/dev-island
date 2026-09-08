@@ -9,7 +9,7 @@ import { terminalTheme } from '../theme';
 interface Props {
   buttonId: string;
   theme: ThemeName;
-  /** Bumped by "Limpar" so the view drops what it is showing. */
+  /** Bumped by "Clear" so the view drops what it is showing. */
   clearToken: number;
 }
 

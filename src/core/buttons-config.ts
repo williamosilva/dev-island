@@ -43,7 +43,7 @@ export function readButtonsFile(projectPath: string): ButtonsFile | null {
   try {
     raw = readJsonIfExists<unknown>(file);
   } catch (error) {
-    throw new Error(`${file} não é um JSON válido: ${(error as Error).message}`);
+    throw new Error(`${file} is not valid JSON: ${(error as Error).message}`);
   }
   if (raw === null) return null;
   return parseButtonsFile(raw);
@@ -142,7 +142,7 @@ export function appendButton(
   const validated = validateNewButton(rawName, rawScript, existing);
   if (!validated.ok) return validated;
   if (existing.some((button) => scriptKey(button.script) === scriptKey(validated.value.script))) {
-    return { ok: false, error: 'Já existe um botão com esse script.' };
+    return { ok: false, error: 'A button with that script already exists.' };
   }
   return { ok: true, value: [...existing, validated.value] };
 }

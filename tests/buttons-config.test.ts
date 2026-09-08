@@ -119,7 +119,7 @@ describe('appendButton', () => {
 
   it('refuses a duplicated script', () => {
     const result = appendButton(existing, 'Outro', 'npm run dev');
-    expect(result).toEqual({ ok: false, error: 'Já existe um botão com esse script.' });
+    expect(result).toEqual({ ok: false, error: 'A button with that script already exists.' });
   });
 });
 

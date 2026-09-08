@@ -148,7 +148,7 @@ describe('an expansion is not a single jump', () => {
     expect(heights.at(-1)).toBe(480);
   });
 
-  it('the form and 3. Mais grow the same way, whatever the height', () => {
+  it('the form and More grow the same way, whatever the height', () => {
     for (const height of [180, 300, 620]) {
       const context = setup();
       expand(context, height);

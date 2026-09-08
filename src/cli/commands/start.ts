@@ -26,23 +26,23 @@ export async function runStart(options: StartOptions): Promise<number> {
   if (await isAppRunning(dataDir)) {
     if (activatePath) {
       await sendRequest(dataDir, 'activate', { cwd: activatePath, shellPid });
-      step('projeto ativado pelo terminal integrado do VS Code');
+      step('project activated from the VS Code integrated terminal');
     } else {
-      // Re-runs the visibility rules and undoes a previous "Fechar".
+      // Re-runs the visibility rules and undoes a previous "Close".
       await sendRequest(dataDir, 'show');
     }
-    step('widget já estava em execução');
+    step('widget was already running');
     return 0;
   }
 
   const started = await launchApp({ dataDir, activatePath, shellPid });
   if (!started) {
-    info('Não foi possível iniciar o widget.');
+    info('Could not start the widget.');
     return 1;
   }
-  step('widget iniciado em segundo plano');
+  step('widget started in the background');
   if (!activatePath) {
-    step('o widget aparecerá quando o projeto for detectado no terminal integrado do VS Code');
+    step('the widget appears once the project is detected in a VS Code integrated terminal');
   }
   return 0;
 }

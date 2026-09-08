@@ -32,12 +32,12 @@ function checkDiscovery(modules, built) {
       const actual = buttons.map((button) => [button.name, button.script]);
       ok = JSON.stringify(actual) === JSON.stringify(fixture.expected);
       if (!ok) {
-        detail = `esperado:\n      ${asList(fixture.expected)}\n    obtido:\n      ${asList(actual)}`;
+        detail = `expected:\n      ${asList(fixture.expected)}\n    got:\n      ${asList(actual)}`;
       }
       const root = modules.discovery.findTaskProjectRoot(directory);
       if (ok && fixture.expected.length > 0 && path.resolve(root ?? '') !== path.resolve(directory)) {
         ok = false;
-        detail = `raiz resolvida ${root}, esperada ${directory}`;
+        detail = `root resolved to ${root}, expected ${directory}`;
       }
     } catch (error) {
       detail = error instanceof Error ? error.message : String(error);
@@ -55,9 +55,9 @@ function checkIdempotence(modules, built) {
     runDiscovery(modules, built.get(name));
     check(
       'idempotence',
-      `${fixture.label} não é reescrito`,
+      `${fixture.label} is not rewritten`,
       fs.readFileSync(file).equals(before) && fs.statSync(file).mtimeMs === stamp,
-      'o arquivo mudou numa segunda descoberta',
+      'the file changed on a second discovery',
     );
   }
 }
@@ -69,7 +69,7 @@ function checkNothingRan(built) {
     'safety',
     'No command executed during discovery',
     called.length === 0,
-    `executores chamados: ${called.map((entry) => entry.runner).join(', ')}`,
+    `runners called: ${called.map((entry) => entry.runner).join(', ')}`,
   );
 
   const noxRoot = built.get('nox');
@@ -80,7 +80,7 @@ function checkNothingRan(built) {
     'safety',
     'Hostile noxfile was not executed',
     traces.length === 0,
-    `arquivos deixados para trás: ${traces.join(', ')}`,
+    `files left behind: ${traces.join(', ')}`,
   );
 }
 
@@ -111,7 +111,7 @@ function checkFakeExecution(built) {
       ok,
       entry
         ? `runner=${entry.runner} args=${JSON.stringify(entry.args)} cwd=${entry.cwd}`
-        : `nenhuma chamada registada (status ${result.status}) ${result.stderr ?? ''}`,
+        : `no call recorded (status ${result.status}) ${result.stderr ?? ''}`,
     );
   }
 }
@@ -132,7 +132,7 @@ function checkRediscovery(built) {
     const directory = built.get(edit.fixture);
     const file = buttonsFile(directory);
     const before = JSON.parse(fs.readFileSync(file, 'utf8'));
-    before.buttons.push({ name: `Meu ${name}`, script: `echo ${name}` });
+    before.buttons.push({ name: `Mine ${name}`, script: `echo ${name}` });
     fs.writeFileSync(file, `${JSON.stringify(before, null, 2)}\n`, 'utf8');
 
     const manifest = path.join(directory, edit.file);
@@ -141,7 +141,7 @@ function checkRediscovery(built) {
     const { buttons } = runDiscovery(modules, directory);
     const pairs = buttons.map((button) => [button.name, button.script]);
     const hasNew = pairs.some(([label, command]) => label === edit.added[0] && command === edit.added[1]);
-    const keptCustom = pairs.some(([label]) => label === `Meu ${name}`);
+    const keptCustom = pairs.some(([label]) => label === `Mine ${name}`);
     const keptOrder =
       JSON.stringify(pairs.slice(0, before.buttons.length)) ===
       JSON.stringify(before.buttons.map((button) => [button.name, button.script]));
@@ -149,7 +149,7 @@ function checkRediscovery(built) {
       'watcher',
       `${edit.file} → ${edit.added[0]}`,
       hasNew && keptCustom && keptOrder,
-      `nova=${hasNew} personalizada=${keptCustom} ordem=${keptOrder}`,
+      `new=${hasNew} custom=${keptCustom} order=${keptOrder}`,
     );
   }
 
@@ -164,11 +164,11 @@ function checkParsers(modules) {
 
   const toml = parseToml(
     [
-      '# comentário no topo',
+      '# a comment at the top',
       '[tool.pdm.scripts]',
-      'test = "pytest -q"  # comentário depois do valor',
+      'test = "pytest -q"  # a comment after the value',
       'hash = "echo #1"',
-      '"chave entre aspas" = "x"',
+      '"quoted key" = "x"',
       'lint = { cmd = "ruff check ." }',
       'itens = [',
       '  "a",',
@@ -180,10 +180,10 @@ function checkParsers(modules) {
   const scripts = toml?.tool?.pdm?.scripts ?? {};
   check(
     'parsers',
-    'TOML: comentário após valor, `#` em string, chave entre aspas, array multilinha, tabela inline',
+    'TOML: trailing comment, `#` in a string, quoted key, multi-line array, inline table',
     scripts.test === 'pytest -q' &&
       scripts.hash === 'echo #1' &&
-      scripts['chave entre aspas'] === 'x' &&
+      scripts['quoted key'] === 'x' &&
       scripts.lint?.cmd === 'ruff check .' &&
       Array.isArray(scripts.itens) &&
       scripts.itens.join(',') === 'a,b',
@@ -192,9 +192,9 @@ function checkParsers(modules) {
 
   check(
     'parsers',
-    'TOML: construção não suportada é recusada inteira, não pela metade',
-    parseToml('x = """multi\nlinha"""') === null && parseToml('quebrado = ') === null,
-    'uma sintaxe fora do subconjunto deveria devolver null',
+    'TOML: an unsupported construct is refused whole, not half read',
+    parseToml('x = """multi\nline"""') === null && parseToml('broken = ') === null,
+    'syntax outside the subset should return null',
   );
 
   const ini = parseIni(
@@ -202,7 +202,7 @@ function checkParsers(modules) {
   );
   check(
     'parsers',
-    'INI: continuação indentada e seções nomeadas',
+    'INI: indented continuation and named sections',
     ini.get('tox')?.get('envlist') === '\npy311\npy312' && ini.has('testenv:lint'),
     JSON.stringify([...(ini.get('tox')?.entries() ?? [])]),
   );
@@ -210,7 +210,7 @@ function checkParsers(modules) {
   const withNamespace = parseXml(
     [
       '<?xml version="1.0" encoding="UTF-8"?>',
-      '<!-- comentário -->',
+      '<!-- a comment -->',
       '<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',
       '  <artifactId>demo</artifactId>',
       '  <name>a &amp; b</name>',
@@ -219,7 +219,7 @@ function checkParsers(modules) {
   );
   check(
     'parsers',
-    'XML: namespace, comentário e entidade predefinida',
+    'XML: namespace, comment and predefined entity',
     withNamespace?.name === 'project' &&
       withNamespace.children.some((child) => child.name === 'artifactId' && child.text === 'demo') &&
       withNamespace.children.some((child) => child.name === 'name' && child.text === 'a & b'),
@@ -235,16 +235,16 @@ function checkParsers(modules) {
   );
   check(
     'parsers',
-    'XML: DOCTYPE e entidade externa recusados',
+    'XML: DOCTYPE and external entity refused',
     doctype === null && parseXml('<project><a>&custom;</a></project>') === null,
-    'um documento com entidade externa deveria ser recusado',
+    'a document with an external entity should be refused',
   );
 
   check(
     'parsers',
-    'XML: conteúdo malformado é recusado',
+    'XML: malformed content is refused',
     parseXml('<project><a></project>') === null,
-    'markup inválido deveria devolver null',
+    'invalid markup should return null',
   );
 }
 

@@ -10,9 +10,9 @@ const existing: ButtonConfig[] = [
 
 describe('validateName', () => {
   it('requires a name', () => {
-    expect(validateName('', existing)).toEqual({ ok: false, error: 'Nome é obrigatório.' });
-    expect(validateName('   ', existing)).toEqual({ ok: false, error: 'Nome é obrigatório.' });
-    expect(validateName(undefined, existing)).toEqual({ ok: false, error: 'Nome é obrigatório.' });
+    expect(validateName('', existing)).toEqual({ ok: false, error: 'Name is required.' });
+    expect(validateName('   ', existing)).toEqual({ ok: false, error: 'Name is required.' });
+    expect(validateName(undefined, existing)).toEqual({ ok: false, error: 'Name is required.' });
   });
 
   it('rejects duplicates ignoring case', () => {
@@ -32,9 +32,9 @@ describe('validateName', () => {
 
 describe('validateScript', () => {
   it('requires a script', () => {
-    expect(validateScript('')).toEqual({ ok: false, error: 'Script é obrigatório.' });
-    expect(validateScript('  ')).toEqual({ ok: false, error: 'Script é obrigatório.' });
-    expect(validateScript(null)).toEqual({ ok: false, error: 'Script é obrigatório.' });
+    expect(validateScript('')).toEqual({ ok: false, error: 'Script is required.' });
+    expect(validateScript('  ')).toEqual({ ok: false, error: 'Script is required.' });
+    expect(validateScript(null)).toEqual({ ok: false, error: 'Script is required.' });
   });
 
   it('trims and accepts a real command', () => {
@@ -61,6 +61,6 @@ describe('validateNewButton', () => {
 
   it('reports the name error before the script error', () => {
     const result = validateNewButton('Dev', '', existing);
-    expect(result).toEqual({ ok: false, error: 'Já existe um botão chamado "Dev".' });
+    expect(result).toEqual({ ok: false, error: 'A button called "Dev" already exists.' });
   });
 });

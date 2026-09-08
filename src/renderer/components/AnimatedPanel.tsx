@@ -9,7 +9,7 @@ interface Props {
 /**
  * The surface every panel opens onto.
  *
- * There is exactly one of these so the terminal, "Mais", the form and the
+ * There is exactly one of these so the terminal, "More", the form and the
  * authorisation prompt cannot drift apart: one class, therefore one reveal
  * (`di-panel-in`), one duration, one curve, one origin, one way of leaving
  * (`.island--collapsing .panel`) and one answer to reduced motion. The window

@@ -141,7 +141,7 @@ export function discoverTasks(
       context.report({
         providerId: provider.id,
         file: context.directory,
-        message: `detecção falhou: ${(error as Error).message}`,
+        message: `detection failed: ${(error as Error).message}`,
       });
       continue;
     }
@@ -155,7 +155,7 @@ export function discoverTasks(
       context.report({
         providerId: provider.id,
         file: match.sourceFiles[0] ?? context.directory,
-        message: `leitura falhou: ${(error as Error).message}`,
+        message: `read failed: ${(error as Error).message}`,
       });
     }
   }

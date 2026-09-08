@@ -57,7 +57,7 @@ body {
   font-size: 12.5px;
   line-height: 1.45;
   color: var(--di-text);
-  /* So "Mais (9)" and "Mais (11)" do not jitter. */
+  /* So "More (9)" and "More (11)" do not jitter. */
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
@@ -334,7 +334,7 @@ body.di-reordering .bar__scripts {
 
 /*
  * A script is shown at its full natural width or not at all. No max-width and
- * no ellipsis: anything that does not fit whole goes to "Mais (N)" instead of
+ * no ellipsis: anything that does not fit whole goes to "More (N)" instead of
  * being squeezed or cut in the middle of its name.
  *
  * It carries two actions, and the main one is still the click, so at rest it

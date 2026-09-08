@@ -34,7 +34,7 @@ function readManifest(file: string, context: ProjectDetectionContext): PackageJs
     context.report({
       providerId: 'node-package-json',
       file,
-      message: `JSON inválido: ${(error as Error).message}`,
+      message: `invalid JSON: ${(error as Error).message}`,
     });
     return null;
   }

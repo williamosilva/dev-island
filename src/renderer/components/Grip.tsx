@@ -6,8 +6,8 @@ interface Props {
   onAutoSize(): void;
 }
 
-export const GRIP_TITLE = 'Arrastar · duplo clique para ajustar automaticamente';
-export const GRIP_LABEL = 'Arrastar widget';
+export const GRIP_TITLE = 'Drag · double click to fit automatically';
+export const GRIP_LABEL = 'Drag widget';
 
 /**
  * The only place the window can be moved from.

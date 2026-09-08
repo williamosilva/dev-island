@@ -13,7 +13,7 @@ const compactBar = fs.readFileSync('src/renderer/components/CompactBar.tsx', 'ut
 /** Reads one rule block out of the stylesheet. */
 function rule(selector: string): string {
   const start = css.indexOf(`${selector} {`);
-  expect(start, `regra ${selector} não encontrada`).toBeGreaterThan(-1);
+  expect(start, `rule ${selector} not found`).toBeGreaterThan(-1);
   return css.slice(start, css.indexOf('}', start));
 }
 
@@ -88,10 +88,10 @@ describe('only the grip moves the window', () => {
 
 describe('the three icon controls are labelled', () => {
   it('uses the expected wording', () => {
-    expect(ADD_LABEL).toBe('Adicionar ação');
-    expect(CLOSE_LABEL).toBe('Fechar widget');
-    expect(themeLabel('dark')).toBe('Usar tema claro');
-    expect(themeLabel('light')).toBe('Usar tema escuro');
+    expect(ADD_LABEL).toBe('Add action');
+    expect(CLOSE_LABEL).toBe('Close widget');
+    expect(themeLabel('dark')).toBe('Use the light theme');
+    expect(themeLabel('light')).toBe('Use the dark theme');
   });
 
   it('puts the same words in aria-label and title', () => {
@@ -113,9 +113,9 @@ describe('the three icon controls are labelled', () => {
   });
 
   it('labels the grip for pointer and screen reader', () => {
-    expect(GRIP_LABEL).toBe('Arrastar widget');
-    expect(GRIP_TITLE).toContain('Arrastar');
-    expect(GRIP_TITLE).toContain('duplo clique');
+    expect(GRIP_LABEL).toBe('Drag widget');
+    expect(GRIP_TITLE).toContain('Drag');
+    expect(GRIP_TITLE).toContain('double click');
   });
 });
 

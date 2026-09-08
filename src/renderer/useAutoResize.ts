@@ -9,7 +9,7 @@ import { prefersReducedMotion } from './reorder-stage';
  * Width and height come from two different places on purpose:
  *
  * - the **width** is the base width computed from the compact bar, so opening
- *   `Tema`, `Adicionar`, `Mais` or a terminal can never make the window
+ *   `Theme`, `Add`, `More` or a terminal can never make the window
  *   narrower (and therefore can never make fewer scripts fit, which would feed
  *   back into an ever-shrinking capsule);
  * - the **height** is measured from the rendered content, because that is the

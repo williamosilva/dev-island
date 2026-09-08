@@ -91,9 +91,11 @@ output and stop or restart the process.
 
 ![A script running with its terminal open inside the bar](docs/images/dev-island-running-script.png)
 
-When there are more scripts than fit, the extra ones go into `Mais (N)`.
+When there are more scripts than fit, the extra ones go into `More (N)`.
 
-![The Mais panel listing the scripts that did not fit](docs/images/dev-island-more-scripts.png)
+![The More panel listing the scripts that did not fit](docs/images/dev-island-more-scripts.png)
+
+You can also drag the buttons around to reorder them, and the order sticks.
 
 If a project ever needs a manual sync, go to its folder and point at the CLI
 with its full path:
@@ -103,6 +105,38 @@ cd C:\dev\my-app
 node C:\tools\dev-island\bin\dev-island.js init
 ```
 
+## Your own buttons
+
+The `+` button adds a command that is not in your `package.json`. It asks for
+two things — a **Name** (the label) and a **Script** (the command to run) — so
+you can keep something like `npx prisma studio` or `docker compose up` one
+click away. To remove one, open its terminal and hit **Delete**.
+
+Dev Island keeps those buttons in a small file inside the project:
+
+```
+<your-project>/.dev-island/buttons.json
+```
+
+It holds the whole bar — the scripts found in `package.json`, the ones you
+added by hand, and the order you dragged them into:
+
+```json
+{
+  "buttons": [
+    { "name": "Dev", "script": "npm run dev" },
+    { "name": "Studio", "script": "npx prisma studio" }
+  ]
+}
+```
+
+It is plain JSON, so you can edit it by hand. Commit it if the buttons make
+sense for the whole team, or add `.dev-island/` to that project's `.gitignore`
+if they are just yours.
+
+Your theme, the window position and its size are not stored there — those are
+yours, not the project's, so they live in `%APPDATA%\dev-island` instead.
+
 ## Themes
 
 The sun/moon button switches between the two themes, and your choice is
@@ -111,7 +145,7 @@ remembered.
 | Dark | Light |
 | --- | --- |
 | ![Compact bar, dark theme](docs/images/dev-island-overview.png) | ![Compact bar, light theme](docs/images/dev-island-overview-light.png) |
-| ![Mais panel, dark theme](docs/images/dev-island-more-scripts.png) | ![Mais panel, light theme](docs/images/dev-island-more-scripts-light.png) |
+| ![More panel, dark theme](docs/images/dev-island-more-scripts.png) | ![More panel, light theme](docs/images/dev-island-more-scripts-light.png) |
 
 The terminal follows the theme as well:
 

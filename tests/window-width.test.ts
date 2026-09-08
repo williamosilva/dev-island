@@ -57,7 +57,7 @@ function windowWidth(measured = REAL, maxWidth = 900): number {
   return clampSize({ width: barWidth(base, fitButtons(base)), height: 42 }, limits).width;
 }
 
-describe('a 19-script project starts with Mais (11)', () => {
+describe('a 19-script project starts with More (11)', () => {
   const result = fitButtons(input());
 
   it('shows 8 of the 19 scripts', () => {
@@ -84,7 +84,7 @@ describe('every screen keeps the same base width', () => {
     expect(new Set(widths).size).toBe(1);
   });
 
-  it('keeps Mais (11) while a panel is open', () => {
+  it('keeps More (11) while a panel is open', () => {
     // Nothing about the open panel reaches the fit input.
     expect(fitButtons(input()).hiddenCount).toBe(11);
     expect(fitButtons(input()).hiddenCount).not.toBe(19);
@@ -99,7 +99,7 @@ describe('every screen keeps the same base width', () => {
   });
 });
 
-describe('opening and closing Tema 20 times never shrinks the capsule', () => {
+describe('opening and closing Theme 20 times never shrinks the capsule', () => {
   it('stays at the base width for every cycle', () => {
     const limits = { sizeMode: 'auto' as const, maxWidth: 900, maxHeight: 720, panelHeight: 320 };
     let width = windowWidth();
@@ -119,7 +119,7 @@ describe('opening and closing Tema 20 times never shrinks the capsule', () => {
 });
 
 describe('the fixed controls and the project label always have room', () => {
-  it('always reserves the full width of Adicionar, Tema and Fechar', () => {
+  it('always reserves the full width of Add, Theme and Close', () => {
     for (const maxWidth of [340, 520, 700, 900, 1200]) {
       const base = input(REAL, maxWidth);
       const width = barWidth(base, fitButtons(base));
@@ -313,7 +313,7 @@ describe('widening and narrowing move whole scripts in and out', () => {
     );
   });
 
-  it('a narrower window sends whole scripts to Mais, in order', () => {
+  it('a narrower window sends whole scripts to More, in order', () => {
     const wide = fitButtons(input(REAL, 1149));
     const narrow = fitButtons(input(REAL, 700));
     expect(narrow.visibleCount).toBeLessThan(wide.visibleCount);

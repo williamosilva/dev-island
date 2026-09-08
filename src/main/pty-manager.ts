@@ -27,7 +27,7 @@ interface Session {
   proc: IPty | null;
   status: ProcessStatus;
   exitCode: number | null;
-  /** True between a Parar/Reiniciar click and the actual exit. */
+  /** True between a Stop/Restart click and the actual exit. */
   stopping: boolean;
   chunks: string[];
   bytes: number;
@@ -133,8 +133,8 @@ export class PtyManager extends EventEmitter {
       this.append(
         session,
         wasStopped
-          ? `\r\n[processo interrompido]\r\n`
-          : `\r\n[processo encerrado com código ${exitCode}]\r\n`,
+          ? `\r\n[process stopped]\r\n`
+          : `\r\n[process exited with code ${exitCode}]\r\n`,
       );
       this.emit('status', session.key);
     });

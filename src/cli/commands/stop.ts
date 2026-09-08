@@ -9,7 +9,7 @@ export async function runStop(): Promise<number> {
 
   if (!(await isAppRunning(dataDir))) {
     if (readRuntimeInfo(dataDir)) clearRuntimeInfo(dataDir);
-    step('nenhum processo em execução');
+    step('no process running');
     return 0;
   }
 
@@ -33,11 +33,11 @@ export async function runStop(): Promise<number> {
       step(`processo ${runtime.pid} encerrado`);
       return 0;
     } catch {
-      step(`não foi possível encerrar o processo ${runtime.pid}`);
+      step(`could not stop process ${runtime.pid}`);
       return 1;
     }
   }
-  step('não foi possível confirmar o encerramento');
+  step('could not confirm it stopped');
   return 1;
 }
 

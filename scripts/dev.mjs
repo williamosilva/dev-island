@@ -28,7 +28,7 @@ async function main() {
   const server = await createServer({ configFile: path.join(root, 'vite.config.ts') });
   await server.listen();
   const url = server.resolvedUrls?.local?.[0];
-  if (!url) throw new Error('Vite não retornou uma URL local.');
+  if (!url) throw new Error('Vite did not return a local URL.');
   console.log(`renderer: ${url}`);
 
   const electron = spawn(electronPath, [root], {

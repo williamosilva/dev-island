@@ -18,14 +18,14 @@ interface HandleSpec {
 }
 
 const HANDLES: readonly HandleSpec[] = [
-  { direction: 'n', className: 'resize--n', label: 'Redimensionar pelo topo', vertical: true },
-  { direction: 's', className: 'resize--s', label: 'Redimensionar pela base', vertical: true },
-  { direction: 'e', className: 'resize--e', label: 'Redimensionar pela direita', vertical: false },
-  { direction: 'w', className: 'resize--w', label: 'Redimensionar pela esquerda', vertical: false },
-  { direction: 'ne', className: 'resize--ne', label: 'Redimensionar pelo canto superior direito', vertical: true },
-  { direction: 'nw', className: 'resize--nw', label: 'Redimensionar pelo canto superior esquerdo', vertical: true },
-  { direction: 'se', className: 'resize--se', label: 'Redimensionar pelo canto inferior direito', vertical: true },
-  { direction: 'sw', className: 'resize--sw', label: 'Redimensionar pelo canto inferior esquerdo', vertical: true },
+  { direction: 'n', className: 'resize--n', label: 'Resize from the top', vertical: true },
+  { direction: 's', className: 'resize--s', label: 'Resize from the bottom', vertical: true },
+  { direction: 'e', className: 'resize--e', label: 'Resize from the right', vertical: false },
+  { direction: 'w', className: 'resize--w', label: 'Resize from the left', vertical: false },
+  { direction: 'ne', className: 'resize--ne', label: 'Resize from the top-right corner', vertical: true },
+  { direction: 'nw', className: 'resize--nw', label: 'Resize from the top-left corner', vertical: true },
+  { direction: 'se', className: 'resize--se', label: 'Resize from the bottom-right corner', vertical: true },
+  { direction: 'sw', className: 'resize--sw', label: 'Resize from the bottom-left corner', vertical: true },
 ];
 
 function Handle({ spec }: { spec: HandleSpec }): JSX.Element {

@@ -145,7 +145,7 @@ export function scanNoxSessions(source: string): NoxScanResult {
     if (masked[cursor] === '(') {
       const close = matchParen(masked, cursor);
       if (close === -1) {
-        skipped.push('decorator sem parêntese fechado');
+        skipped.push('decorator with an unclosed parenthesis');
         break;
       }
       const argumentsText = masked.slice(cursor + 1, close);
@@ -166,16 +166,16 @@ export function scanNoxSessions(source: string): NoxScanResult {
     const rest = masked.slice(cursor, cursor + 2000);
     const definition = FUNCTION.exec(rest);
     if (!definition) {
-      skipped.push('decorator sem função declarada logo abaixo');
+      skipped.push('decorator with no function right below it');
       match = DECORATOR.exec(masked);
       continue;
     }
 
     const name = explicitName ?? definition[1]!;
     if (dynamic) {
-      skipped.push(`sessão com nome dinâmico perto de "${definition[1]!}"`);
+      skipped.push(`session with a dynamic name near "${definition[1]!}"`);
     } else if (!isSafeSessionName(name)) {
-      skipped.push(`nome de sessão recusado: ${name}`);
+      skipped.push(`session name refused: ${name}`);
     } else if (!seen.has(name)) {
       seen.add(name);
       sessions.push({ name, explicit: explicitName !== null });

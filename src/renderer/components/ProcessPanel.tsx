@@ -44,27 +44,27 @@ export function ProcessPanel({
       <div className="panel__actions">
         {running ? (
           <button type="button" className="action" onClick={onStop}>
-            Parar
+            Stop
           </button>
         ) : (
           <button type="button" className="action action--primary" onClick={onRun}>
-            Executar
+            Run
           </button>
         )}
         <button type="button" className="action" onClick={onRestart}>
-          Reiniciar
+          Restart
         </button>
         <button type="button" className="action" onClick={onClear}>
-          Limpar
+          Clear
         </button>
         <button type="button" className="action action--muted" onClick={onBack}>
-          Voltar
+          Back
         </button>
         {button.custom && (
           <>
             <span className="sep" />
             <button type="button" className="action action--danger" onClick={onDelete}>
-              Excluir
+              Delete
             </button>
           </>
         )}

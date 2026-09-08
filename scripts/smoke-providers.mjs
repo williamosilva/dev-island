@@ -45,7 +45,7 @@ function reportAfterCleanUp() {
   const total = Object.keys(FIXTURES).length;
   process.stdout.write(
     `\nResult: ${passedIn('discovery')}/${total} providers passed${
-      failures === 0 ? '' : ` — ${failures} verificações falharam`
+      failures === 0 ? '' : ` — ${failures} checks failed`
     }\n`,
   );
 }
@@ -57,7 +57,7 @@ async function main() {
   const openName = openAt === -1 ? null : argv[openAt + 1];
 
   if (openAt !== -1 && !openName) {
-    process.stderr.write(`${red('--open exige um provedor')}\nDisponíveis: ${OPENABLE.join(', ')}\n`);
+    process.stderr.write(`${red('--open needs a provider')}\nAvailable: ${OPENABLE.join(', ')}\n`);
     process.exit(2);
   }
 

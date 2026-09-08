@@ -120,7 +120,7 @@ export function cleanUp() {
     } catch {
       // Unmarked it may be swept later, but the path below is still printed.
     }
-    process.stdout.write(`\n${dim(`Fixtures preservadas em ${workspace.root}`)}\n`);
+    process.stdout.write(`\n${dim(`Fixtures kept in ${workspace.root}`)}\n`);
     // Even with --keep the isolated instance state goes: only the fixtures are
     // worth looking at afterwards.
     fs.rmSync(workspace.userData, { recursive: true, force: true });

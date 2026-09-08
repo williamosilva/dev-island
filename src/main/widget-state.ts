@@ -141,7 +141,7 @@ export class WidgetState extends EventEmitter {
   /** Answer the "this project is not authorized yet" prompt. */
   resolvePending(accept: boolean): ActionResult {
     const pending = this.pending;
-    if (!pending) return { ok: false, error: 'Nenhuma autorização pendente.' };
+    if (!pending) return { ok: false, error: 'No authorization pending.' };
     this.pending = null;
 
     if (!accept) {
@@ -171,7 +171,7 @@ export class WidgetState extends EventEmitter {
   }
 
   addButton(rawName: unknown, rawScript: unknown): ActionResult {
-    if (!this.project) return { ok: false, error: 'Nenhum projeto ativo.' };
+    if (!this.project) return { ok: false, error: 'No active project.' };
     const result = appendButton(this.buttons, rawName, rawScript);
     if (!result.ok) return { ok: false, error: result.error };
 
@@ -194,13 +194,13 @@ export class WidgetState extends EventEmitter {
    * running are untouched.
    */
   reorderButtons(rawIds: unknown): ActionResult {
-    if (!this.project) return { ok: false, error: 'Nenhum projeto ativo.' };
+    if (!this.project) return { ok: false, error: 'No active project.' };
     if (!Array.isArray(rawIds) || rawIds.some((id) => typeof id !== 'string')) {
-      return { ok: false, error: 'Ordem inválida.' };
+      return { ok: false, error: 'Invalid order.' };
     }
 
     const next = reorderButtons(this.buttons, rawIds as string[]);
-    if (!next) return { ok: false, error: 'Ordem inválida.' };
+    if (!next) return { ok: false, error: 'Invalid order.' };
     if (next.every((button, index) => button === this.buttons[index])) return { ok: true };
 
     try {
@@ -215,15 +215,15 @@ export class WidgetState extends EventEmitter {
   }
 
   deleteButton(id: unknown): ActionResult {
-    if (!this.project) return { ok: false, error: 'Nenhum projeto ativo.' };
+    if (!this.project) return { ok: false, error: 'No active project.' };
     const button = this.findButton(id);
-    if (!button) return { ok: false, error: 'Botão não encontrado.' };
+    if (!button) return { ok: false, error: 'Button not found.' };
     if (!isCustomAmong(button, this.project.tasks)) {
-      return { ok: false, error: 'Somente botões personalizados podem ser excluídos.' };
+      return { ok: false, error: 'Only custom buttons can be deleted.' };
     }
 
     const next = removeButtonById(this.buttons, buttonId(button));
-    if (!next) return { ok: false, error: 'Botão não encontrado.' };
+    if (!next) return { ok: false, error: 'Button not found.' };
 
     try {
       writeButtonsFile(this.project.path, { buttons: next });
@@ -246,7 +246,7 @@ export class WidgetState extends EventEmitter {
       this.buttons = loaded.buttons;
       this.configPresent = !loaded.missingConfig;
       this.notice = loaded.missingConfig
-        ? 'Projeto sem .dev-island/buttons.json. Rode "dev-island init".'
+        ? 'Project without .dev-island/buttons.json. Run "dev-island init".'
         : null;
       return true;
     } catch (error) {
@@ -259,5 +259,5 @@ export class WidgetState extends EventEmitter {
 
 function describeError(error: unknown): string {
   if (error instanceof ProjectError) return error.message;
-  return (error as Error)?.message ?? 'Erro desconhecido.';
+  return (error as Error)?.message ?? 'Unknown error.';
 }

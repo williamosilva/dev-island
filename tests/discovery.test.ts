@@ -38,7 +38,7 @@ describe('finding the nearest project root', () => {
     expect(findProjectRoot(empty)).toBeNull();
     expect(discoverProject(empty, always)).toEqual({
       kind: 'ignored',
-      reason: 'sem-package-json',
+      reason: 'no-package-json',
     });
   });
 
@@ -47,7 +47,7 @@ describe('finding the nearest project root', () => {
     writeFile(path.join(root, 'package.json'), '{ nao json');
     expect(discoverProject(root, always)).toEqual({
       kind: 'ignored',
-      reason: 'package-json-invalido',
+      reason: 'invalid-package-json',
     });
   });
 

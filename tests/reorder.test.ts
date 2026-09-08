@@ -18,7 +18,7 @@ function topbarRects(count: number): ReorderRect[] {
   }));
 }
 
-/** Rows stacked vertically, as they sit in the "Mais" panel. */
+/** Rows stacked vertically, as they sit in the "More" panel. */
 function rowRects(count: number, offset = 0): ReorderRect[] {
   return Array.from({ length: count }, (_unused, index) => ({
     index: offset + index,
@@ -74,7 +74,7 @@ describe('the provisional position follows the dragged button', () => {
     expect(targetFor(rects, 3, { x: 251, y: 25 }).to).toBe(3);
   });
 
-  it('uses the vertical centres for the rows of "Mais"', () => {
+  it('uses the vertical centres for the rows of "More"', () => {
     const rects = rowRects(3, 5);
     // Rows 40px tall from y=0: centres at 20, 60, 100.
     expect(targetFor(rects, 5, { x: 200, y: 20 }).to).toBe(5);

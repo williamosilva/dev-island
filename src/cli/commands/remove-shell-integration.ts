@@ -16,8 +16,8 @@ export function runRemoveShellIntegration(): number {
     if (result.unterminated) {
       problems += 1;
       step(
-        `atenção: marcador de início sem marcador de fim em ${result.profilePath}. ` +
-          'Nada foi apagado; revise o arquivo manualmente.',
+        `warning: start marker without an end marker in ${result.profilePath}. ` +
+          'Nothing was removed; check the file by hand.',
       );
     }
     if (result.hookScriptRemoved) step('script de hook removido');

@@ -59,7 +59,7 @@ describe('cursors', () => {
   it('actions keep the pointer cursor, borders keep theirs', () => {
     expect(rule('.action')).toContain('cursor: pointer');
     expect(rule('.icon-button')).toContain('cursor: pointer');
-    // A row of "Mais" is clicked to run and dragged to reorder; the click is
+    // A row of "More" is clicked to run and dragged to reorder; the click is
     // the main action, so it reads `pointer` like a script button.
     expect(rule('.more__item')).toContain('cursor: pointer');
     expect(rule('.action--script')).toContain('cursor: pointer');
@@ -138,7 +138,7 @@ describe('telling the three gestures apart', () => {
 });
 
 describe('panels, borders and no native drag', () => {
-  it('the rows of Mais join the same ordered list', () => {
+  it('the rows of More join the same ordered list', () => {
     expect(more).toContain("[GESTURE_ATTRIBUTE]: 'reorder'");
     expect(more).toContain('data-reorder-index={index}');
     expect(more).toContain('data-reorder-axis="vertical"');

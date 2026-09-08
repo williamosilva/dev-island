@@ -17,7 +17,7 @@ export function electronBinary(): string {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const resolved = require('electron') as unknown;
   if (typeof resolved !== 'string' || resolved.length === 0) {
-    throw new Error('Electron não encontrado. Rode "npm install" no pacote dev-island.');
+    throw new Error('Electron not found. Run "npm ci" in the dev-island folder.');
   }
   return resolved;
 }

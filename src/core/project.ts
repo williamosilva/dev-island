@@ -51,16 +51,16 @@ export function readPackageJson(projectPath: string): PackageJson {
     raw = fs.readFileSync(file, 'utf8');
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      throw new ProjectError(`Nenhum package.json encontrado em ${projectPath}`);
+      throw new ProjectError(`No package.json found in ${projectPath}`);
     }
-    throw new ProjectError(`Não foi possível ler ${file}: ${(error as Error).message}`);
+    throw new ProjectError(`Could not read ${file}: ${(error as Error).message}`);
   }
 
   let parsed: unknown;
   try {
     parsed = JSON.parse(raw);
   } catch (error) {
-    throw new ProjectError(`${file} não é um JSON válido: ${(error as Error).message}`);
+    throw new ProjectError(`${file} is not valid JSON: ${(error as Error).message}`);
   }
 
   if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {

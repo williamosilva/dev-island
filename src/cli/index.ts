@@ -12,22 +12,21 @@ const VERSION = '0.1.0';
 
 const USAGE = `${PRODUCT_NAME} ${VERSION}
 
-Uso:
-  ${PRODUCT_ID} setup                      configuração global, uma única vez
-  ${PRODUCT_ID} start                      inicia o widget em segundo plano
-  ${PRODUCT_ID} stop                       encerra o widget e seus terminais
-  ${PRODUCT_ID} init                       sincroniza/repara o projeto atual (opcional)
-  ${PRODUCT_ID} remove-shell-integration   remove o bloco criado no perfil do PowerShell
+Usage:
+  ${PRODUCT_ID} setup                      one-time global setup
+  ${PRODUCT_ID} start                      starts the widget in the background
+  ${PRODUCT_ID} stop                       stops the widget and its terminals
+  ${PRODUCT_ID} init                       syncs/repairs the current project (optional)
+  ${PRODUCT_ID} remove-shell-integration   removes the block added to the PowerShell profile
 
-Depois de "${PRODUCT_ID} setup", qualquer projeto Node aberto em um terminal
-integrado do VS Code é detectado automaticamente: "${PRODUCT_ID} init" não é
-mais necessário.
+After "${PRODUCT_ID} setup", any Node project opened in a VS Code integrated
+terminal is detected automatically: "${PRODUCT_ID} init" is no longer needed.
 
-Opções:
-  --no-start       não abre o widget ao final (setup e init)
-  --preview        permite exibir o widget fora do VS Code (só para testes)
-  -h, --help       mostra esta ajuda
-  -v, --version    mostra a versão
+Options:
+  --no-start       does not open the widget at the end (setup and init)
+  --preview        allows showing the widget outside VS Code (for testing only)
+  -h, --help       shows this help
+  -v, --version    shows the version
 `;
 
 export async function main(argv: readonly string[]): Promise<number> {
@@ -49,7 +48,7 @@ export async function main(argv: readonly string[]): Promise<number> {
   }
 
   if (process.platform !== 'win32') {
-    fail('o MVP suporta apenas Windows com PowerShell.');
+    fail('this tool only supports Windows with PowerShell.');
     return 1;
   }
 
@@ -68,7 +67,7 @@ export async function main(argv: readonly string[]): Promise<number> {
     case 'remove-shell-integration':
       return runRemoveShellIntegration();
     default:
-      fail(`comando desconhecido "${command}".`);
+      fail(`unknown command "${command}".`);
       info(USAGE);
       return 1;
   }
@@ -81,7 +80,7 @@ export async function run(): Promise<void> {
     if (error instanceof ProjectError || error instanceof UnsupportedPlatformError) {
       fail(error.message);
     } else {
-      fail((error as Error)?.message ?? 'erro inesperado');
+      fail((error as Error)?.message ?? 'unexpected error');
     }
     process.exitCode = 1;
   }

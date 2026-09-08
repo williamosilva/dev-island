@@ -15,7 +15,6 @@ interface Props {
   expansionComplete: boolean;
 }
 
-/** Exactly two fields, as specified: Nome and Script. */
 export function AddButtonForm({ onSubmit, onBack, expansionComplete }: Props): JSX.Element {
   const [name, setName] = useState('');
   const [script, setScript] = useState('');
@@ -49,11 +48,11 @@ export function AddButtonForm({ onSubmit, onBack, expansionComplete }: Props): J
   return (
     <AnimatedPanel onSubmit={submit}>
       <div className="panel__head">
-        <div className="panel__title">Adicionar</div>
+        <div className="panel__title">Add</div>
       </div>
 
       <label className="field">
-        <span className="field__label">Nome</span>
+        <span className="field__label">Name</span>
         <input
           ref={nameField}
           className="field__input"
@@ -79,10 +78,10 @@ export function AddButtonForm({ onSubmit, onBack, expansionComplete }: Props): J
 
       <div className="panel__actions">
         <button type="submit" className="action action--primary" disabled={busy}>
-          Salvar
+          Save
         </button>
         <button type="button" className="action action--muted" onClick={onBack}>
-          Cancelar
+          Cancel
         </button>
       </div>
     </AnimatedPanel>

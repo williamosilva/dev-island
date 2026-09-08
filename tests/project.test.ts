@@ -32,13 +32,13 @@ describe('readPackageJson', () => {
   it('fails with a clear message when the file is missing', () => {
     const dir = makeTempDir();
     expect(() => readPackageJson(dir)).toThrow(ProjectError);
-    expect(() => readPackageJson(dir)).toThrow(/Nenhum package.json/);
+    expect(() => readPackageJson(dir)).toThrow(/No package.json/);
   });
 
   it('fails when the file is not valid JSON', () => {
     const dir = makeTempDir();
     writeFile(path.join(dir, 'package.json'), '{ not json');
-    expect(() => readPackageJson(dir)).toThrow(/não é um JSON válido/);
+    expect(() => readPackageJson(dir)).toThrow(/is not valid JSON/);
   });
 
   it('fails when the file is not an object', () => {

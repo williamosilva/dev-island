@@ -32,11 +32,11 @@ interface Props {
   placeholder: PlaceholderBox | null;
 }
 
-export const ADD_LABEL = 'Adicionar ação';
-export const CLOSE_LABEL = 'Fechar widget';
+export const ADD_LABEL = 'Add action';
+export const CLOSE_LABEL = 'Close widget';
 
 export function themeLabel(theme: ThemeName): string {
-  return theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro';
+  return theme === 'dark' ? 'Use the light theme' : 'Use the dark theme';
 }
 
 function scriptClass(button: ButtonView): string {
@@ -47,11 +47,11 @@ function scriptClass(button: ButtonView): string {
 }
 
 export function clickHint(button: ButtonView): string {
-  return button.status === 'running' ? 'Clique para abrir o terminal' : 'Clique para executar';
+  return button.status === 'running' ? 'Click to open the terminal' : 'Click to run';
 }
 
 export function scriptTitle(button: ButtonView): string {
-  return `${button.name}\n${button.script}\n${clickHint(button)} · arraste para reordenar`;
+  return `${button.name}\n${button.script}\n${clickHint(button)} · drag to reorder`;
 }
 
 export function CompactBar({
@@ -88,7 +88,7 @@ export function CompactBar({
             </span>
           ))}
           <span className="action" data-measure="more">
-            {`Mais (${buttons.length})`}
+            {`More (${buttons.length})`}
           </span>
           <span className="bar__controls" data-measure="controls">
             <span className="icon-button" />
@@ -109,7 +109,7 @@ export function CompactBar({
 
         {/* Keeps the row stable while dragging. */}
         <div className="bar__scripts">
-          {buttons.length === 0 && <span className="bar__empty">Nenhum botão</span>}
+          {buttons.length === 0 && <span className="bar__empty">No buttons</span>}
           {placeholder && !placeholder.vertical && <ReorderPlaceholder box={placeholder} />}
           {visible.map((button, index) => (
             <button
@@ -137,11 +137,11 @@ export function CompactBar({
             <button
               type="button"
               className={openPanel === 'more' ? 'action action--selected' : 'action'}
-              title={`${hiddenCount} script(s) que não couberam`}
+              title={`${hiddenCount} script(s) that did not fit`}
               onClick={onMore}
               {...{ [GESTURE_ATTRIBUTE]: 'block' }}
             >
-              {`Mais (${hiddenCount})`}
+              {`More (${hiddenCount})`}
             </button>
           )}
           <IconButton

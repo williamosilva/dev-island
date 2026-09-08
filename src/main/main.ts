@@ -148,7 +148,7 @@ function handleTerminalReport(
   const outcome = discoverProject(cwd, { isAuthorized: (root) => registry.isAuthorized(root) });
 
   if (outcome.kind === 'ignored') {
-    return { ok: false, error: `nenhum projeto Node encontrado (${outcome.reason})` };
+    return { ok: false, error: `no Node project found (${outcome.reason})` };
   }
 
   if (outcome.kind === 'needs-authorization') {
@@ -159,20 +159,20 @@ function handleTerminalReport(
     });
     rememberTerminal(outcome.root, shellPid, windowHandle);
     applyForeground(lastForeground);
-    return { ok: true, message: 'aguardando autorização' };
+    return { ok: true, message: 'waiting for authorization' };
   }
 
   // Generated from the project's own manifests, so nothing ran to earn it.
   if (outcome.kind === 'created') registry.authorize(outcome.root, outcome.name);
 
   const activation = state.activate(outcome.root);
-  if (activation.ignored) return { ok: false, error: 'projeto inválido' };
+  if (activation.ignored) return { ok: false, error: 'invalid project' };
 
   rememberTerminal(outcome.root, shellPid, windowHandle);
   applyForeground(lastForeground);
   return {
     ok: true,
-    message: outcome.kind === 'created' ? 'projeto descoberto' : 'ativo',
+    message: outcome.kind === 'created' ? 'project discovered' : 'active',
   };
 }
 
@@ -182,7 +182,7 @@ function handleLocalRequest(request: IpcRequest): IpcResponse {
       return { ok: true, pid: process.pid };
 
     case 'show':
-      // Clears a previous "Fechar"; the VS Code rules still have to allow it.
+      // Clears a previous "Close"; the VS Code rules still have to allow it.
       dismissed = false;
       visibility?.refresh();
       return { ok: true };
@@ -297,7 +297,7 @@ if (!app.requestSingleInstanceLock()) {
     watcher = new PowerShellForegroundWatcher({
       dataDir,
       onError: (error) =>
-        console.error(`[${PRODUCT_ID}] observador de primeiro plano:`, error.message),
+        console.error(`[${PRODUCT_ID}] foreground watcher:`, error.message),
     });
     watcher.onChange((foreground) => applyForeground(foreground));
     watcher.start();
@@ -320,7 +320,7 @@ if (!app.requestSingleInstanceLock()) {
       });
     } catch (error) {
       // Another instance already owns the pipe: nothing to do here.
-      console.error(`[${PRODUCT_ID}] falha ao abrir o canal local:`, (error as Error).message);
+      console.error(`[${PRODUCT_ID}] could not open the local channel:`, (error as Error).message);
     }
 
     visibility.refresh();

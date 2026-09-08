@@ -132,32 +132,32 @@ describe('decideVisibility', () => {
   it('shows when VS Code owns the foreground and a project is active', () => {
     const decision = decideVisibility(input());
     expect(decision.visible).toBe(true);
-    expect(decision.reason).toBe('vscode-em-primeiro-plano');
+    expect(decision.reason).toBe('vscode-in-foreground');
     expect(decision.anchor).toEqual({ x: 100, y: 50, width: 1600, height: 900 });
   });
 
   it('hides when Chrome owns the foreground', () => {
     const decision = decideVisibility(input({ foreground: CHROME }));
     expect(decision.visible).toBe(false);
-    expect(decision.reason).toBe('outro-aplicativo-em-primeiro-plano');
+    expect(decision.reason).toBe('another-app-in-foreground');
   });
 
   it('hides when an external CMD owns the foreground', () => {
     const decision = decideVisibility(input({ foreground: CMD }));
     expect(decision.visible).toBe(false);
-    expect(decision.reason).toBe('outro-aplicativo-em-primeiro-plano');
+    expect(decision.reason).toBe('another-app-in-foreground');
   });
 
   it('hides when VS Code is minimized', () => {
     const decision = decideVisibility(input({ foreground: { ...VS_CODE, minimized: true } }));
     expect(decision.visible).toBe(false);
-    expect(decision.reason).toBe('janela-minimizada');
+    expect(decision.reason).toBe('window-minimized');
   });
 
   it('hides when nothing owns the foreground (VS Code closed)', () => {
     expect(decideVisibility(input({ foreground: null }))).toMatchObject({
       visible: false,
-      reason: 'sem-janela-em-primeiro-plano',
+      reason: 'no-foreground-window',
     });
   });
 
@@ -166,14 +166,14 @@ describe('decideVisibility', () => {
       input({ foreground: OWN_WINDOW, lastExternalWasVsCode: true }),
     );
     expect(decision.visible).toBe(true);
-    expect(decision.reason).toBe('interacao-no-widget');
+    expect(decision.reason).toBe('widget-interaction');
     expect(decision.anchor).toBeNull();
   });
 
   it('does not treat its own window as context when it came from Chrome', () => {
     expect(
       decideVisibility(input({ foreground: OWN_WINDOW, lastExternalWasVsCode: false })),
-    ).toMatchObject({ visible: false, reason: 'widget-sem-contexto-vscode' });
+    ).toMatchObject({ visible: false, reason: 'widget-without-vscode-context' });
   });
 
   it('--preview shows the widget outside VS Code', () => {
@@ -189,22 +189,22 @@ describe('decideVisibility', () => {
   it('requires an active, configured project reached through a live terminal', () => {
     expect(decideVisibility(input({ hasActiveProject: false }))).toMatchObject({
       visible: false,
-      reason: 'sem-projeto-ativo',
+      reason: 'no-active-project',
     });
     expect(decideVisibility(input({ hasProjectConfig: false }))).toMatchObject({
       visible: false,
-      reason: 'sem-configuracao',
+      reason: 'no-configuration',
     });
     expect(decideVisibility(input({ hasLiveTerminal: false }))).toMatchObject({
       visible: false,
-      reason: 'sem-terminal-ativo',
+      reason: 'no-live-terminal',
     });
   });
 
   it('preview does not bypass the missing-project checks', () => {
     expect(
       decideVisibility(input({ preview: true, hasActiveProject: false })),
-    ).toMatchObject({ visible: false, reason: 'sem-projeto-ativo' });
+    ).toMatchObject({ visible: false, reason: 'no-active-project' });
   });
 
   it('still shows an authorization prompt for a project that is not active yet', () => {
@@ -212,13 +212,13 @@ describe('decideVisibility', () => {
       input({ hasActiveProject: false, hasProjectConfig: false, hasPendingAuthorization: true }),
     );
     expect(decision.visible).toBe(true);
-    expect(decision.reason).toBe('vscode-em-primeiro-plano');
+    expect(decision.reason).toBe('vscode-in-foreground');
   });
 
-  it('stays hidden after the user pressed Fechar', () => {
+  it('stays hidden after the user pressed Close', () => {
     expect(decideVisibility(input({ dismissed: true }))).toMatchObject({
       visible: false,
-      reason: 'fechado-pelo-usuario',
+      reason: 'dismissed-by-user',
     });
   });
 });
@@ -266,7 +266,7 @@ describe('VisibilityController', () => {
 
     controller.handleForeground({ ...VS_CODE, minimized: true });
     expect(view.visible).toBe(false);
-    expect(controller.decision.reason).toBe('janela-minimizada');
+    expect(controller.decision.reason).toBe('window-minimized');
   });
 
   it('reappears without stealing focus when VS Code comes back', () => {
@@ -294,7 +294,7 @@ describe('VisibilityController', () => {
     controller.handleForeground(OWN_WINDOW);
     expect(view.visible).toBe(true);
     expect(view.calls).not.toContain('hide');
-    expect(controller.decision.reason).toBe('interacao-no-widget');
+    expect(controller.decision.reason).toBe('widget-interaction');
 
     // ... and switching to Chrome afterwards still hides it.
     controller.handleForeground(CHROME);
@@ -337,6 +337,6 @@ describe('VisibilityController', () => {
     flags.hasLiveTerminal = false;
     controller.refresh();
     expect(view.visible).toBe(false);
-    expect(controller.decision.reason).toBe('sem-terminal-ativo');
+    expect(controller.decision.reason).toBe('no-live-terminal');
   });
 });

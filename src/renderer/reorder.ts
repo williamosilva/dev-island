@@ -1,7 +1,7 @@
 /**
  * Pure helpers behind dragging script buttons around.
  *
- * The topbar and the "Mais" panel are two views of one ordered list, so every
+ * The topbar and the "More" panel are two views of one ordered list, so every
  * position here is an index into the **full** list of buttons, never into the
  * visible slice.
  */
@@ -24,7 +24,7 @@ export interface ReorderRect {
   top: number;
   width: number;
   height: number;
-  /** Rows stack vertically ("Mais"); buttons sit side by side (topbar). */
+  /** Rows stack vertically ("More"); buttons sit side by side (topbar). */
   vertical: boolean;
 }
 

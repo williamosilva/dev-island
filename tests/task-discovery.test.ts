@@ -145,7 +145,7 @@ describe('finding the root', () => {
     const outcome = discoverProject(root, always);
     expect(outcome.kind).toBe('created');
     expect(readButtonsFile(root)).toEqual({ buttons: [] });
-    // Exactly the shape the spec asks for: `{ "buttons": [] }`.
+    // A recognised project with no task source gets `{ "buttons": [] }`.
     expect(JSON.parse(readFile(projectButtonsFile(root)))).toEqual({ buttons: [] });
   });
 });

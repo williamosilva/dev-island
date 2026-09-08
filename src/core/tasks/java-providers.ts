@@ -44,7 +44,7 @@ function readPom(file: string, context: ProjectDetectionContext): XmlElement | n
   if (parsed === null) {
     // A malformed pom (or one carrying a doctype) yields no tasks; the buttons
     // already on disk are left exactly as they are.
-    context.report({ providerId: 'java-maven', file, message: 'XML inválido ou não suportado' });
+    context.report({ providerId: 'java-maven', file, message: 'invalid or unsupported XML' });
     return null;
   }
   return parsed.name === 'project' ? parsed : null;
@@ -183,7 +183,7 @@ export const gradleProvider: ProjectTaskProvider = {
         context.report({
           providerId: 'java-gradle',
           file,
-          message: `plugin não comprovado, ignorado: ${unproven}`,
+          message: `unproven plugin, ignored: ${unproven}`,
         });
       }
     }

@@ -3,7 +3,7 @@
  * produce.
  *
  * Every fixture is inert. The Python manifests declare commands that would be
- * nonsense to run (`comando-interno-nao-executado`) precisely because nothing
+ * nonsense to run (`internal-command-never-executed`) precisely because nothing
  * ever runs them: the Dev Island command is built from the task *name*, and
  * the runner is a fake one. The Java wrappers are small batch files that
  * forward to the same fake runner, so no JDK, Maven or Gradle is needed and
@@ -13,7 +13,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-const INERT = 'comando-interno-nao-executado';
+const INERT = 'internal-command-never-executed';
 
 function write(file, contents) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -29,7 +29,7 @@ function fakeWrapper(file, runner, runnerScript) {
 const pom = (extra = '') =>
   [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<!-- um comentário, que o leitor de XML precisa ignorar -->',
+    '<!-- a comment, which the XML reader has to ignore -->',
     '<project xmlns="http://maven.apache.org/POM/4.0.0"',
     '         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',
     '  <modelVersion>4.0.0</modelVersion>',
@@ -101,7 +101,7 @@ export const FIXTURES = {
           '',
           '[tool.pdm.scripts]',
           `dev = "${INERT}"`,
-          `test = "${INERT}"   # comentário depois do valor`,
+          `test = "${INERT}"   # a comment after the value`,
           `lint = { cmd = "${INERT}" }`,
           '',
         ].join('\n'),
@@ -214,7 +214,7 @@ export const FIXTURES = {
           'from pathlib import Path',
           'import nox',
           '',
-          'Path("PWNED.txt").write_text("este código não pode rodar")',
+          'Path("PWNED.txt").write_text("this code must not run")',
           'os.system("echo NAO_PODE_EXECUTAR")',
           '',
           '',

@@ -22,12 +22,12 @@ export function ensureBuild(needRenderer) {
   const rendererFile = path.join(PROJECT, 'dist', 'renderer', 'index.html');
   if (fs.existsSync(mainFile) && (!needRenderer || fs.existsSync(rendererFile))) return;
 
-  process.stdout.write(`${dim('Compilando o projeto…')}\n`);
+  process.stdout.write(`${dim('Building the project…')}\n`);
   const built = spawnSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', [
     'run',
     needRenderer ? 'build' : 'build:node',
   ], { cwd: PROJECT, stdio: 'inherit', shell: false });
-  if (built.status !== 0) throw new Error('a compilação falhou');
+  if (built.status !== 0) throw new Error('the build failed');
 }
 
 /**
@@ -44,7 +44,7 @@ export function loadDiscovery() {
   for (const name of TRAPPED) {
     original.set(name, childProcess[name]);
     childProcess[name] = (...args) => {
-      throw new Error(`descoberta tentou iniciar um processo: ${name}(${String(args[0])})`);
+      throw new Error(`discovery tried to start a process: ${name}(${String(args[0])})`);
     };
   }
 

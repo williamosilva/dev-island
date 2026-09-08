@@ -73,7 +73,7 @@ export function findTaskProjectRoot(
 }
 
 export type DiscoveryOutcome =
-  | { kind: 'ignored'; reason: 'sem-package-json' | 'package-json-invalido' }
+  | { kind: 'ignored'; reason: 'no-package-json' | 'invalid-package-json' }
   /** Generated from the manifests, so it is trusted without asking. */
   | {
       kind: 'created';
@@ -112,7 +112,7 @@ export function discoverProject(cwd: string, options: DiscoveryOptions): Discove
   const root =
     findProjectRoot(cwd, options.deps ?? realFs) ??
     findTaskProjectRoot(cwd, { isAuthorized: options.isAuthorized });
-  if (!root) return { kind: 'ignored', reason: 'sem-package-json' };
+  if (!root) return { kind: 'ignored', reason: 'no-package-json' };
 
   let name = path.basename(root) || root;
   let packageManager: PackageManager = detectPackageManager(root, null);
@@ -139,7 +139,7 @@ export function discoverProject(cwd: string, options: DiscoveryOptions): Discove
   // A broken package.json only sinks the project when it was the only reason
   // to be here.
   if (brokenPackageJson && tasks.length === 0 && !existing) {
-    return { kind: 'ignored', reason: 'package-json-invalido' };
+    return { kind: 'ignored', reason: 'invalid-package-json' };
   }
 
   if (!existing) {

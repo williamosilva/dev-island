@@ -21,7 +21,7 @@ export async function runInteractive(name) {
   const fixture = FIXTURES[name];
   if (!fixture) {
     process.stderr.write(
-      `${red(`Provedor desconhecido: ${name}`)}\nDisponíveis: ${OPENABLE.join(', ')}\n`,
+      `${red(`Unknown provider: ${name}`)}\nAvailable: ${OPENABLE.join(', ')}\n`,
     );
     return false;
   }
@@ -42,12 +42,12 @@ export async function runInteractive(name) {
   process.stdout.write(`\nProvider: ${fixture.label}\n`);
   process.stdout.write(`Fixture: ${directory}\n\n`);
   process.stdout.write('Expected buttons:\n');
-  if (buttons.length === 0) process.stdout.write('- (nenhum: use o formulário do +)\n');
+  if (buttons.length === 0) process.stdout.write('- (none: use the + form)\n');
   for (const button of buttons) process.stdout.write(`- ${button.name} → ${button.script}\n`);
-  process.stdout.write('\nClique num botão do Dev Island.\n');
-  process.stdout.write('Nenhum Python ou Java é instalado ou executado.\n');
-  process.stdout.write('O × da cápsula esconde o widget, como no app real.\n');
-  process.stdout.write('Pressione Ctrl+C aqui para terminar e limpar tudo.\n\n');
+  process.stdout.write('\nClick a button on Dev Island.\n');
+  process.stdout.write('No Python or Java is installed or executed.\n');
+  process.stdout.write('The × on the capsule hides the widget, as in the real app.\n');
+  process.stdout.write('Press Ctrl+C here to finish and clean everything up.\n\n');
 
   const child = spawn(
     require('electron'),
@@ -69,7 +69,7 @@ export async function runInteractive(name) {
   workspace.children.delete(child);
 
   const calls = readRunnerLog();
-  process.stdout.write(`\n${calls.length} chamada(s) registada(s) pelos executores falsos:\n`);
+  process.stdout.write(`\n${calls.length} call(s) recorded by the fake runners:\n`);
   for (const call of calls) {
     process.stdout.write(`  runner=${call.runner} args=${call.args.join(' ')} cwd=${call.cwd}\n`);
   }

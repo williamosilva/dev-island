@@ -24,31 +24,31 @@ export function scriptKey(script: string): string {
 }
 
 export function validateName(rawName: unknown, existing: readonly ButtonConfig[]): Validation<string> {
-  if (typeof rawName !== 'string') return { ok: false, error: 'Nome é obrigatório.' };
+  if (typeof rawName !== 'string') return { ok: false, error: 'Name is required.' };
   const name = normalizeName(rawName);
-  if (name.length === 0) return { ok: false, error: 'Nome é obrigatório.' };
+  if (name.length === 0) return { ok: false, error: 'Name is required.' };
   if (name.length > MAX_NAME_LENGTH) {
-    return { ok: false, error: `Nome deve ter no máximo ${MAX_NAME_LENGTH} caracteres.` };
+    return { ok: false, error: `Name must be at most ${MAX_NAME_LENGTH} characters.` };
   }
-  if (CONTROL_CHARS.test(name)) return { ok: false, error: 'Nome contém caracteres inválidos.' };
+  if (CONTROL_CHARS.test(name)) return { ok: false, error: 'Name has invalid characters.' };
   if (existing.some((button) => nameKey(button.name) === nameKey(name))) {
-    return { ok: false, error: `Já existe um botão chamado "${name}".` };
+    return { ok: false, error: `A button called "${name}" already exists.` };
   }
   return { ok: true, value: name };
 }
 
 export function validateScript(rawScript: unknown): Validation<string> {
-  if (typeof rawScript !== 'string') return { ok: false, error: 'Script é obrigatório.' };
+  if (typeof rawScript !== 'string') return { ok: false, error: 'Script is required.' };
   const script = rawScript.trim();
-  if (script.length === 0) return { ok: false, error: 'Script é obrigatório.' };
+  if (script.length === 0) return { ok: false, error: 'Script is required.' };
   if (script.length > MAX_SCRIPT_LENGTH) {
-    return { ok: false, error: `Script deve ter no máximo ${MAX_SCRIPT_LENGTH} caracteres.` };
+    return { ok: false, error: `Script must be at most ${MAX_SCRIPT_LENGTH} characters.` };
   }
-  if (CONTROL_CHARS.test(script)) return { ok: false, error: 'Script contém caracteres inválidos.' };
+  if (CONTROL_CHARS.test(script)) return { ok: false, error: 'Script has invalid characters.' };
   return { ok: true, value: script };
 }
 
-/** Validate a button submitted through the widget's "Adicionar" form. */
+/** Validate a button submitted through the widget's "Add" form. */
 export function validateNewButton(
   rawName: unknown,
   rawScript: unknown,

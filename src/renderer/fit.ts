@@ -65,7 +65,7 @@ export function fitButtons(input: FitInput): FitResult {
     return { visibleCount: count, hiddenCount: 0 };
   }
 
-  // Something has to go into "Mais (N)", so that button now costs space too.
+  // Something has to go into "More (N)", so that button now costs space too.
   const reduced = budget - input.moreWidth - input.gap;
   let used = 0;
   let visibleCount = 0;

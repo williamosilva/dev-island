@@ -33,7 +33,7 @@ function readToml(
   if (text === null) return null;
   const parsed = parseToml(text);
   if (parsed === null) {
-    context.report({ providerId, file, message: 'TOML fora do subconjunto suportado' });
+    context.report({ providerId, file, message: 'TOML outside the supported subset' });
   }
   return parsed;
 }
@@ -264,7 +264,7 @@ function toxEnvironments(file: string, context: ProjectDetectionContext): string
       context.report({
         providerId: 'python-tox',
         file,
-        message: `expressão de ambiente ignorada: ${raw}`,
+        message: `environment expression ignored: ${raw}`,
       });
       return;
     }
@@ -288,7 +288,7 @@ function toxEnvironments(file: string, context: ProjectDetectionContext): string
 
   const parsed = parseToml(text);
   if (parsed === null) {
-    context.report({ providerId: 'python-tox', file, message: 'TOML fora do subconjunto suportado' });
+    context.report({ providerId: 'python-tox', file, message: 'TOML outside the supported subset' });
     return [];
   }
   const root = name === 'tox.toml' ? tomlTable(parsed, 'tox') ?? parsed : tomlTable(parsed, 'tool', 'tox');

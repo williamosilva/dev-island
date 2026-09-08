@@ -24,8 +24,8 @@ export interface InitPlan {
   messages: string[];
 }
 
-const INITIALIZED = 'projeto inicializado';
-const STARTED = 'widget iniciado em segundo plano';
+const INITIALIZED = 'project initialized';
+const STARTED = 'widget started in the background';
 
 export function planInit(input: InitPlanInput): InitPlan {
   const activateProject = input.preview || input.insideVsCode;
@@ -36,7 +36,7 @@ export function planInit(input: InitPlanInput): InitPlan {
       activateProject,
       preview: input.preview,
       launchArgs,
-      messages: [INITIALIZED, 'widget não iniciado (--no-start)'],
+      messages: [INITIALIZED, 'widget not started (--no-start)'],
     };
   }
 
@@ -54,7 +54,7 @@ export function planInit(input: InitPlanInput): InitPlan {
       activateProject,
       preview: false,
       launchArgs,
-      messages: [INITIALIZED, STARTED, 'projeto ativado pelo terminal integrado do VS Code'],
+      messages: [INITIALIZED, STARTED, 'project activated from the VS Code integrated terminal'],
     };
   }
 
@@ -65,7 +65,7 @@ export function planInit(input: InitPlanInput): InitPlan {
     messages: [
       INITIALIZED,
       STARTED,
-      'o widget aparecerá quando o projeto for detectado no terminal integrado do VS Code',
+      'the widget appears once the project is detected in a VS Code integrated terminal',
     ],
   };
 }

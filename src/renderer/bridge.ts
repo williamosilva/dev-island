@@ -8,7 +8,7 @@ declare global {
 
 function resolve(): DevIslandApi {
   const api = (globalThis as { window?: { devIsland?: DevIslandApi } }).window?.devIsland;
-  if (!api) throw new Error('A ponte do preload não está disponível.');
+  if (!api) throw new Error('The preload bridge is not available.');
   return api;
 }
 

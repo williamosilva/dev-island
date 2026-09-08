@@ -15,7 +15,7 @@ import { clampSize, computeLayoutLimits, MIN_WIDTH } from '../src/main/window-ge
 import { FREE_DRAG_WIDTH_VARIABLE } from '../src/shared/layout';
 
 /**
- * The topbar keeps a strip of empty space before the "Mais (N)" separator and
+ * The topbar keeps a strip of empty space before the "More (N)" separator and
  * the fixed controls that exists only to be grabbed. These tests pin the
  * reservation down at each layer it touches: the fit algorithm, the window
  * width, the stylesheet and the gesture roles.
@@ -117,7 +117,7 @@ describe('the free drag strip never gets smaller than 28px', () => {
   });
 
   it('is held by the style at the floor, where the ceiling is the binding limit', () => {
-    // At MIN_WIDTH a 125px project label plus "Mais (19)" plus three icons
+    // At MIN_WIDTH a 125px project label plus "More (19)" plus three icons
     // cannot all keep their natural width, so the computed width is clamped
     // and the arithmetic alone no longer guarantees the strip. `min-width` on
     // `.bar__gap` does: measured 28px in the real window at 348px.
@@ -164,7 +164,7 @@ describe('the fit calculation reserves the strip before including scripts', () =
   });
 });
 
-describe('a whole script goes to Mais when it would eat the strip', () => {
+describe('a whole script goes to More when it would eat the strip', () => {
   it('moves the ninth script out instead of shrinking the reservation', () => {
     const fit = fitButtons(input(REAL, 900));
     const { visible, hidden } = splitButtons(REAL.scripts, fit.visibleCount);
@@ -194,7 +194,7 @@ describe('a whole script goes to Mais when it would eat the strip', () => {
   });
 });
 
-describe('Mais (N) is recalculated with the reservation in place', () => {
+describe('More (N) is recalculated with the reservation in place', () => {
   it('reports 11 hidden scripts for the 19-script project', () => {
     const fit = fitButtons(input(REAL, 900));
     expect(fit.hiddenCount).toBe(11);
@@ -377,7 +377,7 @@ describe('the strip holds in auto mode and after a manual resize', () => {
     expect(MIN_WIDTH).toBeGreaterThan(MIN_FREE_DRAG_WIDTH);
   });
 
-  it('migrates whole scripts to Mais as the width narrows, and back', () => {
+  it('migrates whole scripts to More as the width narrows, and back', () => {
     const wide = fitButtons(input(REAL, 1200));
     const narrow = fitButtons(input(REAL, 520));
     expect(narrow.visibleCount).toBeLessThan(wide.visibleCount);
@@ -386,7 +386,7 @@ describe('the strip holds in auto mode and after a manual resize', () => {
   });
 });
 
-describe('the strip survives the terminal, Adicionar and Mais', () => {
+describe('the strip survives the terminal, Add and More', () => {
   it('is unaffected by the open panel, which never reaches the fit input', () => {
     // `barWidth` only sees the compact bar's measurements; there is no panel
     // input at all, so every screen keeps the same strip.

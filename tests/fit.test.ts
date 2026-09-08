@@ -20,8 +20,8 @@ const REAL_SCRIPTS = [
 const widthOf = (name: string): number => name.length * 7 + 20;
 
 /** Measured widths of the fixed controls, as rendered. */
-const CONTROLS_WIDTH = widthOf('Adicionar') + BAR_GAP + widthOf('Tema') + BAR_GAP + widthOf('Fechar');
-const MORE_WIDTH = widthOf('Mais (19)');
+const CONTROLS_WIDTH = widthOf('Add') + BAR_GAP + widthOf('Theme') + BAR_GAP + widthOf('Close');
+const MORE_WIDTH = widthOf('More (19)');
 
 function input(names: readonly string[], overrides: Partial<FitInput> = {}): FitInput {
   return {
@@ -51,13 +51,13 @@ function occupied(names: readonly string[], visibleCount: number, showsMore: boo
   );
 }
 
-describe('a project with few scripts shows no "Mais"', () => {
+describe('a project with few scripts shows no "More"', () => {
   it('fits three buttons with room to spare', () => {
     const names = ['Dev', 'Test', 'Build'];
     expect(fitButtons(input(names))).toEqual({ visibleCount: 3, hiddenCount: 0 });
   });
 
-  it('never reports "Mais (0)"', () => {
+  it('never reports "More (0)"', () => {
     const result = fitButtons(input(['Dev', 'Test', 'Build']));
     expect(result.hiddenCount).toBe(0);
   });

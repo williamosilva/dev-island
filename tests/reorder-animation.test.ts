@@ -46,7 +46,7 @@ function topbar(widths: readonly number[] = WIDTHS, top = 10): ReorderRect[] {
   return rects;
 }
 
-/** Rows stacked in the "Mais" panel, 2px apart, 40px tall. */
+/** Rows stacked in the "More" panel, 2px apart, 40px tall. */
 function rows(count: number, offset = 0, top = 200): ReorderRect[] {
   return Array.from({ length: count }, (_unused, index) => ({
     index: offset + index,
@@ -152,7 +152,7 @@ describe('a button at rest is something you click', () => {
     expect(rule('.action--script')).not.toContain('cursor: grab');
   });
 
-  it('a row of "Mais" reads pointer as well', () => {
+  it('a row of "More" reads pointer as well', () => {
     expect(rule('.more__item')).toContain('cursor: pointer');
     expect(rule('.more__item')).not.toContain('cursor: grab');
   });
@@ -539,7 +539,7 @@ describe('the widget itself does not move', () => {
     expect(code(APP)).toContain('state.buttons.length,');
   });
 
-  it('Mais (N) keeps counting what did not fit', () => {
+  it('More (N) keeps counting what did not fit', () => {
     const buttons = [button('a'), button('b'), button('c'), button('d')];
     for (const order of [['d', 'c', 'b', 'a'], ['b', 'a'], []]) {
       // However the order is held, the list is the same length, so the split
@@ -547,14 +547,14 @@ describe('the widget itself does not move', () => {
       const applied = applyOrder(buttons, order);
       expect(applied).toHaveLength(buttons.length);
     }
-    expect(code(BAR)).toContain('{`Mais (${hiddenCount})`}');
-    expect(code(BAR)).toContain('{`Mais (${buttons.length})`}');
-    expect(code(MORE)).toContain('{`Mais (${buttons.length})`}');
+    expect(code(BAR)).toContain('{`More (${hiddenCount})`}');
+    expect(code(BAR)).toContain('{`More (${buttons.length})`}');
+    expect(code(MORE)).toContain('{`More (${buttons.length})`}');
   });
 });
 
 describe('the panel animates vertically, and across to the bar', () => {
-  it('a row dragged inside Mais moves the other rows vertically', () => {
+  it('a row dragged inside More moves the other rows vertically', () => {
     const rects = rows(4, 0);
     const { elements, written } = stageElements(rects);
     // Row 0 carried down past row 1: centres at 220, 262, 304, 346.
@@ -595,7 +595,7 @@ describe('the panel animates vertically, and across to the bar', () => {
     expect(written.get(6)!.transform).toBe('translate3d(0px, -42px, 0)');
   });
 
-  it('and the button it displaced is the one that moves down to Mais', () => {
+  it('and the button it displaced is the one that moves down to More', () => {
     const rects = [...topbar(), ...rows(3, 4)];
     const ctx = context(rects, 5, { x: 70, y: 25 }, 70);
     const ids = ['b0', 'b1', 'b2', 'b3', 'r4', 'r5', 'r6'];

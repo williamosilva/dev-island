@@ -76,7 +76,7 @@ export function gapOf(rects: readonly ReorderRect[], vertical: boolean): number 
 }
 
 /**
- * A row dragged out of "Mais" is as wide as the panel, so the space it will
+ * A row dragged out of "More" is as wide as the panel, so the space it will
  * need on the bar comes from the measured natural width instead.
  */
 export function containerMetrics(

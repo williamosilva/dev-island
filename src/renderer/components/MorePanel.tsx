@@ -46,7 +46,7 @@ export function MorePanel({
   return (
     <AnimatedPanel>
       <div className="panel__head">
-        <div className="panel__title">{`Mais (${buttons.length})`}</div>
+        <div className="panel__title">{`More (${buttons.length})`}</div>
       </div>
 
       <div className="more" {...gestures}>
@@ -85,7 +85,7 @@ export function MorePanel({
           onClick={onBack}
           {...{ [GESTURE_ATTRIBUTE]: 'block' }}
         >
-          Voltar
+          Back
         </button>
       </div>
     </AnimatedPanel>

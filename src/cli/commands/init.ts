@@ -26,28 +26,28 @@ export interface InitOptions {
  */
 export async function runInit(options: InitOptions): Promise<number> {
   const dataDir = resolveDataDir();
-  heading(`sincronizando ${options.cwd}`);
+  heading(`syncing ${options.cwd}`);
 
   const result = initializeProject(options.cwd);
-  step(`gerenciador de pacotes: ${result.project.packageManager}`);
-  step(`scripts encontrados: ${result.project.scripts.length}`);
+  step(`package manager: ${result.project.packageManager}`);
+  step(`scripts found: ${result.project.scripts.length}`);
   step(
     result.created
-      ? `criado ${projectButtonsFile(result.project.path)}`
-      : `atualizado ${projectButtonsFile(result.project.path)}`,
+      ? `created ${projectButtonsFile(result.project.path)}`
+      : `updated ${projectButtonsFile(result.project.path)}`,
   );
   if (result.added.length > 0) {
-    step(`botões adicionados: ${result.added.map((button) => button.name).join(', ')}`);
+    step(`buttons added: ${result.added.map((button) => button.name).join(', ')}`);
   } else if (!result.created) {
-    step('nenhum botão novo (configuração preservada)');
+    step('no new buttons (configuration preserved)');
   }
 
   new ProjectRegistry(dataDir).authorize(result.project.path, result.project.name);
-  step('projeto autorizado');
+  step('project authorized');
 
   // The global hook is `setup`'s job; `init` never touches the profile.
   if (!fs.existsSync(hookScriptFile(dataDir))) {
-    info(`integração do shell ausente: rode "${PRODUCT_ID} setup" uma vez`);
+    info(`shell integration missing: run "${PRODUCT_ID} setup" once`);
   }
 
   if (options.noStart) return 0;
@@ -58,7 +58,7 @@ export async function runInit(options: InitOptions): Promise<number> {
       cwd: result.project.path,
       shellPid: process.ppid,
     });
-    step('projeto ativado no widget');
+    step('project activated in the widget');
   }
   return 0;
 }

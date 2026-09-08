@@ -138,7 +138,7 @@ describe('the capsule has no shadow left to be clipped', () => {
   });
 });
 
-describe('Adicionar moves exactly like Mais', () => {
+describe('Add moves exactly like More', () => {
   it('both panels are the same component, so they cannot drift', () => {
     const more = MorePanel({
       buttons: [],
@@ -202,7 +202,7 @@ describe('Adicionar moves exactly like Mais', () => {
 
   it('the normalised progress of the bounds is identical for both', () => {
     const from: Rect = { x: 400, y: 152, width: 884, height: 48 };
-    // "Mais" for 19 scripts and the form end at very different heights.
+    // "More" for 19 scripts and the form end at very different heights.
     const progressFor = (height: number): number[] => {
       const to: Rect = { ...from, height };
       return Array.from({ length: BOUNDS_STEPS }, (_unused, index) => {
@@ -257,9 +257,9 @@ describe('the form arrives with the panel, not before it', () => {
     expect(APP).toContain("expansionComplete={phase === 'expanded'}");
   });
 
-  it('Cancelar closes exactly the way Voltar does', () => {
+  it('Cancel closes exactly the way Back does', () => {
     // Both are handed the same callback, which is the animated close.
-    expect(renderForm(true)).toContain('Cancelar');
+    expect(renderForm(true)).toContain('Cancel');
     expect(APP).toContain('<AddButtonForm');
     expect(APP).toContain('onBack={back}');
     const back = APP.slice(APP.indexOf('const back = useCallback'), APP.indexOf('const toggle'));

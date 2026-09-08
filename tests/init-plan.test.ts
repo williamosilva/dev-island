@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { planInit } from '../src/cli/init-plan';
 
 const OUTSIDE_MESSAGE =
-  'o widget aparecerá quando o projeto for detectado no terminal integrado do VS Code';
+  'the widget appears once the project is detected in a VS Code integrated terminal';
 
 describe('planInit', () => {
   it('init in an external terminal starts hidden and activates nothing', () => {
@@ -13,8 +13,8 @@ describe('planInit', () => {
     expect(plan.preview).toBe(false);
     expect(plan.launchArgs).toEqual([]);
     expect(plan.messages).toEqual([
-      'projeto inicializado',
-      'widget iniciado em segundo plano',
+      'project initialized',
+      'widget started in the background',
       OUTSIDE_MESSAGE,
     ]);
   });
@@ -35,9 +35,9 @@ describe('planInit', () => {
     expect(plan.preview).toBe(false);
     expect(plan.launchArgs).toEqual([]);
     expect(plan.messages).toEqual([
-      'projeto inicializado',
-      'widget iniciado em segundo plano',
-      'projeto ativado pelo terminal integrado do VS Code',
+      'project initialized',
+      'widget started in the background',
+      'project activated from the VS Code integrated terminal',
     ]);
   });
 
@@ -60,6 +60,6 @@ describe('planInit', () => {
 
   it('--no-start reports that nothing was launched', () => {
     const plan = planInit({ insideVsCode: false, preview: false, noStart: true });
-    expect(plan.messages).toEqual(['projeto inicializado', 'widget não iniciado (--no-start)']);
+    expect(plan.messages).toEqual(['project initialized', 'widget not started (--no-start)']);
   });
 });

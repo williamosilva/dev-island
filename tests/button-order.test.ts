@@ -236,7 +236,7 @@ describe('the order decides what the topbar shows', () => {
     expect(fit.hiddenCount).toBe(names.length - fit.visibleCount);
 
     // Move the last script to the front: it becomes visible, and whatever it
-    // displaced moves into "Mais".
+    // displaced moves into "More".
     const reordered = [names[5]!, ...names.slice(0, 5)];
     const reorderedWidths = [widths[5]!, ...widths.slice(0, 5)];
     const after = fitButtons({ ...input, buttonWidths: reorderedWidths });

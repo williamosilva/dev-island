@@ -71,14 +71,14 @@ export function checkIsolation() {
     'No network access',
     // The fake runners are one Node file that only writes to the log.
     !NETWORK_CALL.test(fs.readFileSync(RUNNER_SCRIPT, 'utf8')),
-    'o runner falso não pode conter chamadas de rede',
+    'the fake runner must not contain network calls',
   );
 
   check(
     'safety',
     'Real userData unchanged',
     baseline.userData === stamp(realUserData),
-    `${realUserData} mudou durante a execução`,
+    `${realUserData} changed during the run`,
   );
 
   const changed = [...baseline.profiles].find(([file, before]) => before !== stamp(file));
@@ -86,20 +86,20 @@ export function checkIsolation() {
     'safety',
     'PowerShell profile unchanged',
     changed === undefined,
-    `${changed?.[0]} mudou durante a execução`,
+    `${changed?.[0]} changed during the run`,
   );
 
   check(
     'safety',
     'PATH unchanged',
     process.env.PATH === baseline.path,
-    'o PATH do processo pai foi modificado',
+    'the parent process PATH was modified',
   );
 
   check(
     'safety',
     'No install was attempted',
     readRunnerLog().every((entry) => !entry.args.some((argument) => INSTALL_ARGUMENT.test(argument))),
-    'algum executor recebeu um argumento de instalação',
+    'a runner received an install argument',
   );
 }

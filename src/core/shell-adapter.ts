@@ -35,7 +35,7 @@ const ADAPTERS: ShellAdapter[] = [powerShellAdapter];
 
 export class UnsupportedPlatformError extends Error {
   constructor(platform: NodeJS.Platform) {
-    super(`${platform} ainda não é suportado. O MVP cobre apenas Windows + PowerShell.`);
+    super(`${platform} is not supported yet. Today it is Windows with PowerShell only.`);
     this.name = 'UnsupportedPlatformError';
   }
 }

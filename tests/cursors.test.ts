@@ -26,7 +26,7 @@ function declaredCursor(selector: string): string | null {
  * The cursor each part of the widget must show at rest.
  *
  * `grab` belongs to the surfaces whose only job is moving the window. A script
- * button and a row of "Mais" are primarily things you click, so they read
+ * button and a row of "More" are primarily things you click, so they read
  * `pointer`; carrying one is what turns the cursor into the closed hand, and
  * only once the press has stopped being a click.
  */
@@ -98,20 +98,20 @@ describe('the script tooltip explains both actions', () => {
   });
 
   it('offers to run while the script is idle', () => {
-    expect(clickHint(button('idle'))).toBe('Clique para executar');
+    expect(clickHint(button('idle'))).toBe('Click to run');
     expect(scriptTitle(button('idle'))).toBe(
-      'Dev\nnpm run dev\nClique para executar · arraste para reordenar',
+      'Dev\nnpm run dev\nClick to run · drag to reorder',
     );
   });
 
   it('offers the terminal while the script runs', () => {
-    expect(clickHint(button('running'))).toBe('Clique para abrir o terminal');
-    expect(scriptTitle(button('running'))).toContain('Clique para abrir o terminal');
+    expect(clickHint(button('running'))).toBe('Click to open the terminal');
+    expect(scriptTitle(button('running'))).toContain('Click to open the terminal');
   });
 
   it('keeps the drag half identical in every state', () => {
     for (const status of ['idle', 'running', 'exited'] as const) {
-      expect(scriptTitle(button(status))).toContain('· arraste para reordenar');
+      expect(scriptTitle(button(status))).toContain('· drag to reorder');
       // The real command is still there, as it always was.
       expect(scriptTitle(button(status))).toContain('npm run dev');
     }
