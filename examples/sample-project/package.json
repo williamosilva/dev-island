@@ -1,0 +1,11 @@
+{
+  "name": "sample-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Small project used to try the Dev Island widget by hand.",
+  "scripts": {
+    "dev": "node scripts/watch.js",
+    "test": "node scripts/test.js",
+    "build": "node scripts/build.js"
+  }
+}

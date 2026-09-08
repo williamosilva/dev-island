@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "types": ["node"],
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": false
+  },
+  "include": [
+    "src/shared/**/*.ts",
+    "src/core/**/*.ts",
+    "src/shell/**/*.ts",
+    "src/localipc/**/*.ts",
+    "src/cli/**/*.ts",
+    "src/main/**/*.ts",
+    "src/preload/**/*.ts"
+  ]
+}

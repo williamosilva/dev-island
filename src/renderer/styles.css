@@ -1,0 +1,883 @@
+/*
+ * Colours come from the tokens `applyThemeTokens` injects, so both themes share
+ * one set of rules. Only the area around the capsule is transparent: every
+ * surface below is opaque so the editor never shows through.
+ */
+:root {
+  --di-radius: 14px;
+  /* Half the capsule height: a true pill. */
+  --di-radius-pill: 23px;
+  --di-radius-control: 9px;
+  --di-capsule-height: 46px;
+  --di-gap: 4px;
+  --di-pad-x: 8px;
+  --di-pad-y: 7px;
+  /* The system UI face, never a bundled or proprietary font. */
+  --di-font:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI Variable',
+    'Segoe UI',
+    system-ui,
+    sans-serif;
+  --di-mono: 'Cascadia Mono', Consolas, 'Courier New', monospace;
+  --di-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --di-quick: 130ms;
+  --di-panel-in: 200ms;
+  --di-panel-out: 160ms;
+  --di-capsule-in: 200ms;
+  --di-max-width: 900px;
+  --di-max-height: 760px;
+  --di-panel-height: 320px;
+  /* Republished by the App from MIN_FREE_DRAG_WIDTH; this is the first paint. */
+  --di-free-drag-width: 28px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* The closed hand has to follow the gesture off the element and off the window. */
+body.di-gesturing,
+body.di-gesturing *,
+body.di-reordering,
+body.di-reordering * {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+  user-select: none;
+  font-family: var(--di-font);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--di-text);
+  /* So "Mais (9)" and "Mais (11)" do not jitter. */
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Paints nothing: anything here would be a rectangle the size of the window.
+ * The radius carries the silhouette while a panel opens, when the window is
+ * still catching up with the capsule and its bottom corners would go square.
+ */
+#root {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  background: transparent;
+  overflow: hidden;
+  border-radius: var(--di-radius-pill);
+}
+
+#root:has(.island--expanded) {
+  border-radius: var(--di-radius);
+}
+
+.island {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  background: var(--di-bg);
+  border: 1px solid var(--di-border);
+  border-radius: var(--di-radius-pill);
+  /*
+   * Inset only. The window is the size of the capsule, so an outer shadow has
+   * nowhere to fade into and is cut dead at the window edge — a visible
+   * rectangle over the editor.
+   */
+  box-shadow:
+    inset 0 1px 0 var(--di-inset-top),
+    inset 0 -1px 0 var(--di-inset-bottom);
+  overflow: hidden;
+  position: relative;
+  transition:
+    border-radius var(--di-quick) var(--di-ease),
+    background-color var(--di-panel-in) var(--di-ease),
+    border-color var(--di-panel-in) var(--di-ease);
+  /* Only the grip may drag the window; everything else stays interactive. */
+  -webkit-app-region: no-drag;
+}
+
+
+
+.island--expanded {
+  border-radius: var(--di-radius);
+}
+
+/* Runs once the window is placed, so the capsule moves and the window does not. */
+@keyframes di-capsule-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.island--entering {
+  animation: di-capsule-in var(--di-capsule-in) var(--di-ease) both;
+  transform-origin: 50% 0;
+}
+
+/* ---------------------------------------------------------------- bar ---- */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--di-gap);
+  padding: var(--di-pad-y) var(--di-pad-x);
+  min-height: var(--di-capsule-height);
+  min-width: 0;
+  /* Free areas move the window; the controls below take `pointer` back. */
+  cursor: grab;
+}
+
+/* Empty on purpose: somewhere to grab, never below the width the fit reserved. */
+.bar__gap {
+  flex: 1 0 auto;
+  min-width: var(--di-free-drag-width);
+  align-self: stretch;
+}
+
+.bar__lead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* Shrinkable: `MIN_WIDTH` budgets only `PROJECT_MIN_WIDTH` here, and a fixed
+     block overflows the bar instead of eliding the label. */
+  flex: 0 1 auto;
+  min-width: 0;
+  padding-right: 2px;
+  border-right: 1px solid var(--di-border);
+  margin-right: 2px;
+}
+
+/* The one and only drag region. */
+.grip {
+  /* Not `drag`: on Windows that makes it non-client and the OS replaces the
+     cursor with the plain arrow. The renderer drives the move instead. */
+  -webkit-app-region: no-drag;
+  display: grid;
+  grid-template-columns: repeat(2, 3px);
+  grid-auto-rows: 3px;
+  gap: 3px;
+  align-content: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 26px;
+  border-radius: 6px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.grip:hover {
+  background: var(--di-hover);
+}
+
+.grip:active {
+  cursor: grabbing;
+  background: var(--di-active);
+}
+
+.grip__dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--di-text-muted);
+}
+
+.grip:hover .grip__dot {
+  background: var(--di-text);
+}
+
+.bar__project {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 190px;
+  color: var(--di-text-muted);
+  font-weight: 590;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar__scripts {
+  display: flex;
+  align-items: center;
+  gap: var(--di-gap);
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  /* Containing block for the slot a dragged button leaves behind. */
+  position: relative;
+}
+
+.bar__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--di-gap);
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.bar__empty {
+  color: var(--di-text-muted);
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.sep {
+  flex: 0 0 auto;
+  width: 1px;
+  align-self: center;
+  height: 18px;
+  margin: 0 4px;
+  background: var(--di-border);
+}
+
+/* Off-screen copy for measuring: `fixed` plus `contain` keep it out of the
+   flow, the scroll box and the size sent to Electron. */
+.measure {
+  position: fixed;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+  contain: layout size style;
+}
+
+/* Mirrors the grip's footprint without being a drag region. */
+.measure__grip {
+  display: block;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 26px;
+}
+
+.measure__row {
+  display: flex;
+  align-items: center;
+  gap: var(--di-gap);
+  width: max-content;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------ actions ---- */
+
+.action {
+  -webkit-app-region: no-drag;
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--di-text);
+  font: inherit;
+  font-weight: 450;
+  line-height: 1.3;
+  padding: 6px 10px;
+  border-radius: var(--di-radius-control);
+  cursor: pointer;
+  white-space: nowrap;
+  /* Colour and transform only, so the box the button occupies never changes. */
+  transition:
+    background-color var(--di-quick) var(--di-ease),
+    color var(--di-quick) var(--di-ease),
+    transform var(--di-quick) var(--di-ease);
+}
+
+.action--dragging,
+.more__item--dragging {
+  position: relative;
+  z-index: 3;
+  background: var(--di-active);
+  box-shadow: 0 3px 10px var(--di-shadow);
+}
+
+/* Out of flow, so marking the slot moves and measures nothing. */
+.reorder-slot {
+  position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
+  border: 1px dashed var(--di-border);
+  border-radius: 7px;
+  background: var(--di-hover);
+  pointer-events: none;
+}
+
+.reorder-slot--row {
+  border-radius: 6px;
+}
+
+body.di-reordering [data-di-gesture='reorder'] {
+  will-change: transform;
+}
+
+/* The carried button would be clipped at the edge of the scripts area. Only
+   transforms move, so lifting the clip changes no size and no measurement. */
+body.di-reordering .bar__scripts {
+  overflow: visible;
+}
+
+
+
+/*
+ * A script is shown at its full natural width or not at all. No max-width and
+ * no ellipsis: anything that does not fit whole goes to "Mais (N)" instead of
+ * being squeezed or cut in the middle of its name.
+ *
+ * It carries two actions, and the main one is still the click, so at rest it
+ * reads `pointer` like any other button. Dragging it is what turns the cursor
+ * into the closed hand, and only after the press has travelled far enough to
+ * stop being a click.
+ */
+.action--script {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.icon-button {
+  -webkit-app-region: no-drag;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--di-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--di-quick) var(--di-ease),
+    color var(--di-quick) var(--di-ease),
+    transform var(--di-quick) var(--di-ease);
+}
+
+.icon-button:hover {
+  background: var(--di-hover);
+  color: var(--di-text);
+  transform: translateY(-1px) scale(1.04);
+  /* Only while it is actually about to move. */
+  will-change: transform;
+}
+
+.icon-button:active {
+  background: var(--di-active);
+  transform: scale(0.95);
+}
+
+.icon-button--add:hover svg {
+  transform: scale(1.08);
+}
+
+.icon-button--theme:hover svg {
+  transform: rotate(-12deg);
+}
+
+.icon-button svg {
+  transition: transform var(--di-quick) var(--di-ease);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--di-accent);
+  outline-offset: 1px;
+  border-color: transparent;
+  color: var(--di-text);
+}
+
+.icon-button--selected {
+  background: var(--di-active);
+  color: var(--di-text);
+}
+
+.action:hover {
+  background: var(--di-hover);
+}
+
+.action:active {
+  background: var(--di-active);
+  transform: scale(0.96);
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--di-accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.action[disabled] {
+  color: var(--di-text-disabled);
+  cursor: default;
+  background: transparent;
+  transform: none;
+  opacity: 0.65;
+}
+
+/* Colour only: the width is measured without this class, so anything that
+   changes the metrics would overflow the space the fit reserved. */
+.action--running {
+  color: var(--di-running);
+}
+
+.action--exited {
+  color: var(--di-text-muted);
+}
+
+.action--muted {
+  color: var(--di-text-muted);
+}
+
+.action--danger {
+  color: var(--di-danger);
+}
+
+.action--selected {
+  background: var(--di-active);
+  color: var(--di-text);
+}
+
+.action--primary {
+  border-color: var(--di-accent);
+  color: var(--di-accent);
+}
+
+/* ------------------------------------------------------------- panels ---- */
+
+/* `opacity` and `transform` only, so the height the renderer measures is final
+   from the first frame and the window is not resized frame by frame. */
+@keyframes di-panel-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.panel {
+  -webkit-app-region: no-drag;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 12px var(--di-pad-x) 13px;
+  border-top: 1px solid var(--di-border);
+  background: var(--di-bg-elevated);
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  transform-origin: 50% 0;
+  animation: di-panel-in var(--di-panel-in) var(--di-ease) both;
+}
+
+/* The panel leaves the flow at once, so the capsule measures compact and the
+   window starts shrinking while the panel fades over the space given back. */
+.island--collapsing {
+  overflow: visible;
+}
+
+.island--collapsing .panel {
+  position: absolute;
+  top: var(--di-capsule-height);
+  left: 0;
+  right: 0;
+  /* Inert while it fades: a click cannot land on something on its way out. */
+  pointer-events: none;
+  animation: di-panel-out var(--di-panel-out) var(--di-ease) both;
+}
+
+@keyframes di-panel-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0) scale(0.995);
+  }
+}
+
+.panel__head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.panel__title {
+  font-weight: 590;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panel__script {
+  font-family: var(--di-mono);
+  font-size: 11px;
+  color: var(--di-text-muted);
+  user-select: text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panel__path {
+  font-family: var(--di-mono);
+  font-size: 11px;
+  color: var(--di-text-muted);
+  user-select: text;
+  word-break: break-all;
+  min-width: 0;
+}
+
+.panel__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--di-gap);
+  flex-wrap: wrap;
+}
+
+.panel__hint {
+  color: var(--di-text-muted);
+}
+
+/* --------------------------------------------------------------- form ---- */
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.field__label {
+  flex: 0 0 auto;
+  width: 52px;
+  color: var(--di-text-muted);
+}
+
+.field__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  -webkit-app-region: no-drag;
+  background: var(--di-bg-input);
+  border: 1px solid var(--di-border);
+  border-radius: var(--di-radius-control);
+  color: var(--di-text);
+  font: inherit;
+  padding: 7px 9px;
+  user-select: text;
+  transition:
+    border-color var(--di-quick) var(--di-ease),
+    box-shadow var(--di-quick) var(--di-ease);
+}
+
+/* Focus lands on the accent, in both themes. */
+.field__input:focus {
+  outline: none;
+  border-color: var(--di-accent);
+  box-shadow: 0 0 0 3px var(--di-selection);
+}
+
+.field__input::placeholder {
+  color: var(--di-text-disabled);
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--di-accent);
+}
+
+.field__input--mono {
+  font-family: var(--di-mono);
+}
+
+.error {
+  color: var(--di-danger);
+}
+
+.notice {
+  color: var(--di-text-muted);
+}
+
+/* ---------------------------------------------------------- more list ---- */
+
+.more {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  /* Containing block for the slot a dragged row leaves behind. */
+  position: relative;
+  max-height: min(var(--di-panel-height), calc(var(--di-max-height) - 140px));
+  min-height: 120px;
+  /*
+   * Without this the rows paint past the cap and run under the actions below.
+   */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2px;
+  background: var(--di-bg-terminal);
+  border: 1px solid var(--di-border);
+  border-radius: var(--di-radius);
+}
+
+/* A window the user sized keeps that size: the list fills it instead of
+   shrinking back to its content. */
+:root[data-size-mode='manual'] .more {
+  height: min(var(--di-panel-height), calc(var(--di-max-height) - 140px));
+}
+
+.more__item {
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--di-text);
+  font: inherit;
+  text-align: left;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.more__item:hover {
+  background: var(--di-hover);
+}
+
+.more__item:active {
+  background: var(--di-active);
+}
+
+.more__item:focus-visible {
+  outline: none;
+  border-color: var(--di-accent);
+}
+
+.more__name {
+  flex: 0 0 auto;
+  max-width: 190px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.more__item--running .more__name {
+  color: var(--di-running);
+}
+
+.more__script {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--di-mono);
+  font-size: 11px;
+  color: var(--di-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ----------------------------------------------------------- terminal ---- */
+
+.terminal {
+  -webkit-app-region: no-drag;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  height: min(var(--di-panel-height), calc(var(--di-max-height) - 160px));
+  min-height: 120px;
+  background: var(--di-bg-terminal);
+  border: 1px solid var(--di-border);
+  border-radius: var(--di-radius);
+  padding: 6px;
+  overflow: hidden;
+}
+
+.terminal .xterm {
+  height: 100%;
+}
+
+.terminal .xterm-viewport {
+  background: transparent !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--di-border);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--di-text-disabled);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ------------------------------------------------------------- resize ---- */
+
+/* Windows gives a frameless transparent window no usable resize border, so
+   these elements drive the resize through IPC. */
+.resize {
+  -webkit-app-region: no-drag;
+  position: absolute;
+  z-index: 3;
+  touch-action: none;
+}
+
+.resize--n,
+.resize--s {
+  left: 0;
+  width: 100%;
+  height: 6px;
+  cursor: ns-resize;
+}
+
+.resize--n {
+  top: 0;
+}
+
+.resize--s {
+  bottom: 0;
+}
+
+.resize--e,
+.resize--w {
+  top: 0;
+  width: 6px;
+  height: 100%;
+  cursor: ew-resize;
+}
+
+.resize--e {
+  right: 0;
+}
+
+.resize--w {
+  left: 0;
+}
+
+/* Corners sit above the edges so they win the overlapping pixels. */
+.resize--ne,
+.resize--nw,
+.resize--se,
+.resize--sw {
+  width: 12px;
+  height: 12px;
+  z-index: 4;
+}
+
+.resize--nw,
+.resize--se {
+  cursor: nwse-resize;
+}
+
+.resize--ne,
+.resize--sw {
+  cursor: nesw-resize;
+}
+
+.resize--nw {
+  top: 0;
+  left: 0;
+}
+
+.resize--ne {
+  top: 0;
+  right: 0;
+}
+
+.resize--sw {
+  bottom: 0;
+  left: 0;
+}
+
+.resize--se {
+  bottom: 0;
+  right: 0;
+}
+
+.resize--se::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid var(--di-text-disabled);
+  border-bottom: 1px solid var(--di-text-disabled);
+}
+
+.island:hover .resize--se::after {
+  border-color: var(--di-text-muted);
+}
+
+/*
+ * Nothing travels or scales, but every state still changes. Last in the file
+ * so these win, and `!important` so an inline transition written by a gesture
+ * cannot sneak past them.
+ */
+@media (prefers-reduced-motion: reduce) {
+  [data-di-gesture='reorder'] {
+    transition: none !important;
+  }
+
+  .island--entering,
+  .panel,
+  .island--collapsing .panel {
+    animation: none !important;
+  }
+
+  .action,
+  .icon-button,
+  .icon-button svg,
+  .grip,
+  .island {
+    transition: none !important;
+  }
+
+  .action:active,
+  .icon-button:hover,
+  .icon-button:active,
+  .icon-button--add:hover svg,
+  .icon-button--theme:hover svg {
+    transform: none !important;
+  }
+}

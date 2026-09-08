@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Build output: npm run build regenerates all of it
+/dist/
+
+# Test coverage
+/coverage/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dev Island state for this checkout
+/.dev-island/
+# Smoke workspaces; they normally live in the system temp directory
+dev-island-smoke-*/
+
+# npm pack output
+*.tgz
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.swp
+*~

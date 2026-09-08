@@ -1,0 +1,70 @@
+{
+  "name": "dev-island",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Floating desktop widget that detects the Node.js project open in a VS Code PowerShell terminal and runs its scripts.",
+  "keywords": [
+    "developer-tools",
+    "task-runner",
+    "nodejs",
+    "npm-scripts",
+    "vscode",
+    "electron",
+    "terminal",
+    "windows"
+  ],
+  "homepage": "https://github.com/williamosilva/dev-island#readme",
+  "bugs": {
+    "url": "https://github.com/williamosilva/dev-island/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williamosilva/dev-island.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "William Oliveira Silva",
+    "url": "https://williamsilva.tech"
+  },
+  "main": "dist/main/main.js",
+  "bin": {
+    "dev-island": "bin/dev-island.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "win32"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run build:node && npm run build:renderer",
+    "build:node": "tsc -p tsconfig.node.json",
+    "build:renderer": "vite build",
+    "start": "node bin/dev-island.js start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit && tsc -p tsconfig.test.json --noEmit",
+    "smoke:providers": "node scripts/smoke-providers.mjs"
+  },
+  "dependencies": {
+    "electron": "^33.2.1",
+    "node-pty": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/xterm": "^5.5.0",
+    "eslint": "^9.17.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8"
+  }
+}
