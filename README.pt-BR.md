@@ -6,6 +6,8 @@ O Dev Island coloca os scripts do seu projeto Node.js numa pequena barra
 flutuante sobre o VS Code. Você clica no script, acompanha a saída e continua
 trabalhando.
 
+![O Dev Island rodando um script do projeto e mostrando a saída no terminal dentro da barra](docs/images/dev-island-demo.gif)
+
 Ele lê os `scripts` do seu `package.json` e transforma cada um num botão. Se
 você trocar para outro projeto em outra janela do VS Code, a barra acompanha e
 passa a mostrar os scripts daquele projeto.
@@ -16,8 +18,6 @@ Eu criei o Dev Island por uma preguiça bem simples: cansei de digitar os mesmos
 scripts do npm e ficar trocando de terminal só para rodar dev, build ou test. A
 ideia é deixar esses scripts a um clique e ganhar um pouco de tempo no dia a
 dia.
-
-![A barra do Dev Island com os scripts de um projeto Node.js](docs/images/dev-island-overview.png)
 
 ## Beta
 

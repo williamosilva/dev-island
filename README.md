@@ -5,6 +5,8 @@ English | [Português](README.pt-BR.md)
 Dev Island puts the scripts from your Node.js project in a small floating bar
 over VS Code. Click a script, follow the output and keep working.
 
+![Dev Island running a project script and showing the output in the terminal inside the bar](docs/images/dev-island-demo.gif)
+
 It reads the `scripts` from your `package.json` and turns each one into a
 button. When you switch to another project in another VS Code window, the bar
 follows you and shows that project's scripts instead.
@@ -15,8 +17,6 @@ I built Dev Island out of a little laziness. I was tired of typing the same npm
 scripts and switching between terminals just to run dev, build or test. The
 idea is simple: keep those scripts one click away and make this part of the day
 a little faster.
-
-![The Dev Island bar showing the scripts of a Node.js project](docs/images/dev-island-overview.png)
 
 ## Beta status
 
