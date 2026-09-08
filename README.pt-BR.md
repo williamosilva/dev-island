@@ -64,7 +64,7 @@ você mover ou renomear depois, rode o `setup` de novo.
 Rode o setup uma vez, dentro da pasta do Dev Island:
 
 ```bash
-node bin/dev-island.js setup
+npm run setup
 ```
 
 O setup é feito uma única vez. Depois disso, o Dev Island funciona nos seus
@@ -76,7 +76,7 @@ O fluxo inteiro é:
 1. clonar ou baixar o Dev Island;
 2. `npm ci`;
 3. `npm run build`;
-4. `node bin/dev-island.js setup`, uma vez;
+4. `npm run setup`, uma vez;
 5. deixar a pasta onde está;
 6. abrir qualquer projeto Node.js no VS Code;
 7. abrir o terminal PowerShell integrado;
@@ -84,8 +84,8 @@ O fluxo inteiro é:
 
 Você não roda `setup` em cada projeto, e não há nada para instalar
 globalmente — o Dev Island não é publicado no npm e o comando `dev-island` não
-entra no seu PATH. Sempre que precisar da CLI, chame por
-`node bin/dev-island.js` a partir da pasta do Dev Island.
+entra no seu PATH. Os scripts npm da pasta do Dev Island são a CLI:
+`npm run setup`, `npm start` e `npm run stop`.
 
 Clicar num script abre um terminal dentro da própria barra, onde você acompanha
 a saída e pode parar ou reiniciar o processo.

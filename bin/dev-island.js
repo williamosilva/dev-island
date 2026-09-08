@@ -7,7 +7,7 @@ const fs = require('node:fs');
 
 const entry = path.join(__dirname, '..', 'dist', 'cli', 'index.js');
 if (!fs.existsSync(entry)) {
-  process.stderr.write('dev-island: build ausente. Rode "npm run build" no pacote.\n');
+  process.stderr.write('dev-island: build missing. Run "npm run build" in the package.\n');
   process.exit(1);
 }
 

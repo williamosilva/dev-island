@@ -6,7 +6,7 @@ import '@xterm/xterm/css/xterm.css';
 import './styles.css';
 
 const container = document.getElementById('root');
-if (!container) throw new Error('root element ausente');
+if (!container) throw new Error('root element missing');
 
 createRoot(container).render(
   <StrictMode>

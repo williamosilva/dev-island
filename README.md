@@ -63,7 +63,7 @@ move or rename it later, run `setup` again.
 Run the setup once, from the Dev Island folder:
 
 ```bash
-node bin/dev-island.js setup
+npm run setup
 ```
 
 Setup is done only once. After that, Dev Island works across your Node.js
@@ -75,7 +75,7 @@ So the whole flow is:
 1. clone or download Dev Island;
 2. `npm ci`;
 3. `npm run build`;
-4. `node bin/dev-island.js setup`, once;
+4. `npm run setup`, once;
 5. leave the folder where it is;
 6. open any Node.js project in VS Code;
 7. open an integrated PowerShell terminal;
@@ -83,8 +83,8 @@ So the whole flow is:
 
 You don't run `setup` in every project, and there is nothing to install
 globally — Dev Island is not published to npm, and the `dev-island` command is
-not added to your PATH. Whenever you need the CLI, call it through
-`node bin/dev-island.js` from the Dev Island folder.
+not added to your PATH. The npm scripts in the Dev Island folder are the CLI:
+`npm run setup`, `npm start` and `npm run stop`.
 
 Clicking a script opens a terminal inside the bar, where you can watch the
 output and stop or restart the process.
