@@ -82,10 +82,14 @@ O fluxo inteiro é:
 7. abrir o terminal PowerShell integrado;
 8. clicar nos scripts pela Island.
 
-Você não roda `setup` em cada projeto, e não há nada para instalar
-globalmente — o Dev Island não é publicado no npm e o comando `dev-island` não
-entra no seu PATH. Os scripts npm da pasta do Dev Island são a CLI:
-`npm run setup`, `npm start` e `npm run stop`.
+O setup é global e é o único comando que você precisa rodar. Daí em diante,
+todo projeto Node.js que você abrir no VS Code é reconhecido sozinho — não há
+nada para rodar por projeto, nem comando para lembrar.
+
+Nada é instalado globalmente no sentido do npm: o Dev Island não é publicado no
+npm e o comando `dev-island` não entra no seu PATH. Nas raras vezes em que você
+precisar da CLI, a pasta do Dev Island tem `npm run setup`, `npm start` e
+`npm run stop`.
 
 Clicar num script abre um terminal dentro da própria barra, onde você acompanha
 a saída e pode parar ou reiniciar o processo.
